@@ -50,14 +50,14 @@ a {
 export default function InstructWell({ instructions }) {
   return (
     <div>
-      {instructions.map((item) => {
+      {instructions.map((item, index) => {
         return (
-          <Well>
+          <Well key={index}>
             <Title>
               <StyledH6>{item.title}</StyledH6>
             </Title>
-            {item.list.map(listItem => {
-              return <Item><div className="listItem" dangerouslySetInnerHTML={{__html: listItem}}></div></Item>
+            {item.list.map((listItem, index) => {
+              return <Item key={index}><div className="listItem" dangerouslySetInnerHTML={{__html: listItem}}></div></Item>
             })}
           </Well>
         );

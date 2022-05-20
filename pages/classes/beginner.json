@@ -25,7 +25,7 @@
           },
           {
             "title": "Project Instructions",
-            "list": ["Open VS Code", "You should be met with a Getting Started page. Go ahead and select <i>New File</i>.", "On the first line print \"Hello World\"", "Save this file with your first initial, last name, and lab number. So if your name is Shafee Masud, save the file as: <pre>smasud_00.py</pre>", "To run your code, open the terminal", "You can locate the terminal in the navigation bar of VS Code. Once you find it, select <i> New Terminal </i>", "Once you've opened a new terminal, type <pre>python3 smasud_00.py</pre>. Replace the filename here with yours." "Check the terminal to see if it outputs \"hello world\""]
+            "list": ["Open VS Code", "You should be met with a Getting Started page. Go ahead and select <i>New File</i>.", "On the first line print \"Hello World\"", "Save this file with your first initial, last name, and lab number. So if your name is Shafee Masud, save the file as: <pre>smasud_00.py</pre>", "To run your code, open the terminal", "You can locate the terminal in the navigation bar of VS Code. Once you find it, select <i> New Terminal </i>", "Once you've opened a new terminal, type <pre>python3 smasud_00.py</pre>. Replace the filename here with yours.", "Check the terminal to see if it outputs \"hello world\""]
           }
           ,
           {"title": "Submission",
