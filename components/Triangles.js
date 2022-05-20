@@ -1,4 +1,4 @@
-import Doodle from "./doodle";
+import Doodle from "./Doodle";
 
 export default function Triangles({ labs }) {
   return (
