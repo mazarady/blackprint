@@ -7,7 +7,7 @@ const NavBar = styled.nav`
   z-index: 5;
 `;
 
-const TestH3 = styled.h3`
+const LogoH3 = styled.h3`
   font-family: Arial;
   font-size: 23px;
   letter-spacing: 2px;
@@ -16,15 +16,19 @@ const TestH3 = styled.h3`
   line-height: 25px;
   cursor: pointer;
   text-shadow: 3px 3px 0 #fff;
-  margin-left: 110px;
+  margin-left: 30px;
   margin-top: 30px;
+  @media (min-width: 1040px) {
+    margin-left: 90px;
+
+  }
 `;
 
 export default function Nav({ content }) {
   return (
     <NavBar>
       <Link href="/">
-        <TestH3>blkprnt</TestH3>
+        <LogoH3>blkprnt</LogoH3>
       </Link>
     </NavBar>
   );

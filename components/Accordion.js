@@ -23,7 +23,7 @@ const Accordion = ({ labs }) => {
   });
 
   return (
-    <div className="faq__list" style={{ "margin-top": "20px" }}>
+    <div className="faq__list" style={{ "margin": "20px 0px" }}>
       {renderedlabs}
     </div>
   );

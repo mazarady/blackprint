@@ -15,7 +15,7 @@ const Section = styled.section`
   }
 
   h5 {
-    margin-top: 25px;
+    margin-top: 8px;
   }
 `;
 
