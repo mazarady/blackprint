@@ -7,7 +7,7 @@ const ItemDiv = styled.div`
   @media (min-width: 768px) {
     width: 80%;
   }
-  transition: all 200ms ease-out;
+  transition: all 200ms ease-in-out;
 
   ${({ on }) => {
     if (on == "show-description") {
@@ -25,6 +25,8 @@ const ItemDiv = styled.div`
   .faq__question {
     max-width: 350px;
     width: 100%;
+    transition: all 200ms ease-in-out;
+
   }
 
   .faq__question-button {
@@ -38,6 +40,7 @@ const ItemDiv = styled.div`
     cursor: pointer;
     border-bottom: 2px solid #ededed;
     margin-bottom: 8px;
+    transition: all 200ms ease-in-out;
   }
 
   .faq__desc {
@@ -46,14 +49,19 @@ const ItemDiv = styled.div`
     margin-bottom: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
     max-width: 1200px;
+    opacity: 0;
+
 
   }
   .faq__desc.show-description {
     max-height: 2000px;
+    transition: all 200ms ease-in-out;
+    opacity: 1;
     p {
       margin: 0;
+      transition: all 200ms ease-in-out;
     }
     padding-bottom: 25px;
   }
@@ -61,7 +69,7 @@ const ItemDiv = styled.div`
 
 const StyledQA = styled.div`
   padding: 0px 20px;
-  transition: all 200ms ease-out;
+  transition: all 200ms ease-in-out;
 
   @media (min-width: 576px) {
     padding: 0px 40px;
@@ -76,7 +84,7 @@ const StyledQA = styled.div`
       return css`
         &:first-of-type {
           padding-top: 15px;
-          transition: all 200ms ease-out;
+          transition: all 200ms ease-in-out;
         }
       `;
     }
