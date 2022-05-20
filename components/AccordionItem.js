@@ -103,11 +103,11 @@ const AccordionItem = ({
   <ItemDiv className="faq__question" key={item.id} on={showDescription} >
     <StyledQA on={showDescription}>
       <H6
-        aria-expanded={ariaExpanded}
+        aria-expanded={ariaExpanded[index]}
         aria-controls={`faq${index + 1}_desc`}
         data-qa="faq__question-button"
         className={`faq__question-button`}
-        onClick={onClick}
+        onClick={() => onClick(index)}
       >
         <span>Module {index}</span> {!showDescription ? item.title : ""}
         <Time on={showDescription}>- {item.time} hours</Time>

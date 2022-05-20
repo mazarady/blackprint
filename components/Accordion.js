@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import AccordionItem from "./AccordionItem";
 
 const Accordion = ({ labs }) => {
-  const [activeIndex, setActiveIndex] = useState(false);
+  const labsToggle = {};
+  for (let i = 0; i < labs.length; i++) {
+    labsToggle[i] = false
+  }
+  const [activeIndex, setActiveIndex] = useState(labsToggle);
   const renderedlabs = labs.map((item, index) => {
-    const showDescription = activeIndex ? "show-description" : "";
-    const fontWeightBold = activeIndex ? "font-weight-bold" : "";
-    const ariaExpanded = activeIndex;
+    const showDescription = activeIndex[index] ? "show-description" : "";
+    const fontWeightBold = activeIndex[index] ? "font-weight-bold" : "";
+    const ariaExpanded = activeIndex[index];
     return (
       <AccordionItem
         showDescription={showDescription}
@@ -15,8 +19,8 @@ const Accordion = ({ labs }) => {
         item={item}
         index={index}
         key={index}
-        onClick={() => {
-          setActiveIndex(!activeIndex);
+        onClick={(index) => {
+          setActiveIndex({...activeIndex, [index]: !activeIndex[index]});
         }}
       />
     );
