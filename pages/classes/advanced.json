@@ -1,0 +1,33 @@
+[
+  {
+    "title": "Python Programming 3",
+    "id": "advanced",
+    "bg": "#bad9e4",
+    "desc": "<p>This career path will turn you into a hireable frontend developer, and teach you how to nail the job interview. It contains over 70 hours of top-notch tutorials, hundreds of coding challenges, and dozens of real-world projects.</p>",
+    "level": 2,
+    "labs": [
+      {
+        "id": 0,
+        "title": "Hello World",
+        "desc": "description of lab 0",
+        "steps": [
+          {
+            "one": "do this",
+            "two": "do this"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "title": "Fibonnaci",
+        "desc": "description of lab 1",
+        "steps": [
+          {
+            "one": "do this",
+            "two": "do this"
+          }
+        ]
+      }
+    ]
+  }
+]

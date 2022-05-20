@@ -1,0 +1,33 @@
+[
+  {
+    "title": "Python Programming 2",
+    "id": "intermediate",
+    "bg": "#fedbcf",
+    "desc": "<p>This course is the second in this eight month introductory sequence, which focuses on introducing you to computer science and to programming using Python. It emphasizes techniques used to write larger, more complex programs than you may have written previously, each in a different, realistic problem domain. At the end of the course, you should be able to write programs much larger than you could before, and you should feel like you're empowered to work on your own programs.</p>",
+    "level": 1,
+    "labs": [
+      {
+        "id": 0,
+        "title": "Hello World",
+        "desc": "description of lab 0",
+        "steps": [
+          {
+            "one": "do this",
+            "two": "do this"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "title": "Fibonnaci",
+        "desc": "description of lab 1",
+        "steps": [
+          {
+            "one": "do this",
+            "two": "do this"
+          }
+        ]
+      }
+    ]
+  }
+]
