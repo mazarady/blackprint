@@ -1,5 +1,5 @@
 import "css-doodle";
 
-export default ({ rule = "" }) => (
+export default function Doodle({ rule = "" }) {return(
   <css-doodle click-to-update>{rule}</css-doodle>
-);
+)};

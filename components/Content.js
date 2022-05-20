@@ -23,7 +23,7 @@ export default function Content({ content, labs }) {
   return (
     <Fragment>
       <Section>
-        <H3>What's inside</H3>
+        <H3>What&apos;s inside</H3>
         <H5>This course contains {labs.length} interactive modules.</H5>
       </Section>
       <Labs labs={labs} />
