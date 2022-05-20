@@ -1,7 +1,7 @@
-import { getAllClassIds, getClassData } from "../lib/classes";
-import Banner from "../components/Banner";
-import Content from "../components/Content";
-import Nav from "../components/Nav";
+import { getAllClassIds, getClassData } from "../../lib/classes";
+import Banner from "../../components/Banner";
+import Content from "../../components/Content";
+import Nav from "../../components/Nav";
 
 import { Fragment } from "react";
 
