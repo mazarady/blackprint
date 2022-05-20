@@ -2,7 +2,7 @@
   {
     "title": "Python Programming 1",
     "bg": "hsla(54,100%,92%,100%)",
-    "id": "beginner",
+    "id": "intermediate",
     "desc": "<p>This course is the first of an 8 month sequence introducing computer science through computer programming. This course will broaden your technical horizons, focus on systematic problem solving, and possibly change the way you look at the world. We welcome you and we hope you enjoy it.</p>",
     "level": 0,
     "labs": [
