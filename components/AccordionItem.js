@@ -61,6 +61,8 @@ const ItemDiv = styled.div`
 
 const StyledQA = styled.div`
   padding: 0px 20px;
+  transition: all 200ms ease-out;
+
   @media (min-width: 576px) {
     padding: 0px 40px;
 
