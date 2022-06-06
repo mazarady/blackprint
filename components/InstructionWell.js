@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import { Fragment } from "react";
 import { H6 } from "./Headers";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import ReactDom from 'react-dom'
 
 const Well = styled.div`
   height: auto;
@@ -19,6 +17,7 @@ line-height: 20px;
 `
 
 const Title = styled.div`
+
 `;
 
 const Item = styled.div`

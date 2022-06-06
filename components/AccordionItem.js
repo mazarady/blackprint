@@ -41,7 +41,13 @@ const ItemDiv = styled.div`
     border-bottom: 2px solid #ededed;
     margin-bottom: 8px;
     transition: all 200ms ease-in-out;
+    font-size: 14px;
+    line-height: 31px;
+    @media (min-width: 576px) {
+      font-size: 18px;
+      line-height: 45px;
 
+    }
   }
 
   .faq__desc {
@@ -71,6 +77,7 @@ const ItemDiv = styled.div`
 const StyledQA = styled.div`
   padding: 0px 20px;
   transition: all 200ms ease-in-out;
+
 
   @media (min-width: 576px) {
     padding: 0px 40px;
