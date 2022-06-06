@@ -47,7 +47,9 @@ export default function InstructWell({ instructions }) {
             </Title>
                <Item key={index}>
                 <div className="listItem">
-                  <ReactMarkdown children={item.steps} remarkPlugins={[remarkGfm]} />
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {item.steps}
+                  </ReactMarkdown>
                </div>
                </Item>
           </Well>
