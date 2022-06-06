@@ -41,6 +41,7 @@ const ItemDiv = styled.div`
     border-bottom: 2px solid #ededed;
     margin-bottom: 8px;
     transition: all 200ms ease-in-out;
+
   }
 
   .faq__desc {
@@ -56,7 +57,7 @@ const ItemDiv = styled.div`
 
   }
   .faq__desc.show-description {
-    max-height: 2000px;
+    max-height: 5000px;
     transition: all 200ms ease-in-out;
     opacity: 1;
     p {
