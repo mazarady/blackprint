@@ -7,6 +7,7 @@ const Accordion = ({ labs }) => {
     labsToggle[i] = false
   }
   const [activeIndex, setActiveIndex] = useState(labsToggle);
+
   const renderedlabs = labs.map((item, index) => {
     const showDescription = activeIndex[index] ? "show-description" : "";
     const fontWeightBold = activeIndex[index] ? "font-weight-bold" : "";

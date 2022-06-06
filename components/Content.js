@@ -19,7 +19,7 @@ const Section = styled.section`
   }
 `;
 
-export default function Content({ content, labs }) {
+export default function Content({ labs }) {
   return (
     <Fragment>
       <Section>

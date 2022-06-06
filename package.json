@@ -13,12 +13,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "css-doodle": "^0.27.1",
     "gray-matter": "^4.0.3",
     "markdown-it": "^13.0.0",
     "next": "12.1.5",
+    "qs": "^6.10.3",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-markdown": "^8.0.3",
+    "remark-gfm": "^3.0.1",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {

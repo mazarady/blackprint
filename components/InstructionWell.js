@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { Fragment } from "react";
 import { H6 } from "./Headers";
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import ReactDom from 'react-dom'
 
 const Well = styled.div`
   height: auto;
@@ -20,30 +23,16 @@ const Title = styled.div`
 `;
 
 const Item = styled.div`
-display: flex;
-
-&::before {
-  content: "-";
-  padding-right: 10px;
-}
-pre {
-  margin: 0px;
-  font-size: 14px;
-  color: #A55858;
-  display: inline-block;
-
-}
-img {
-  max-width: 100%;
-  width: 320px;
-  border-radius: 16px;
-}
 a {
   color: #A55858
 }
 .listItem {
-  padding-bottom: 5px;
-  line-height: 1.5
+  line-height: 1.3;
+  ul {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-row-gap: 5px;
+  }
 }
 `;
 
@@ -56,9 +45,11 @@ export default function InstructWell({ instructions }) {
             <Title>
               <StyledH6>{item.title}</StyledH6>
             </Title>
-            {item.list.map((listItem, index) => {
-              return <Item key={index}><div className="listItem" dangerouslySetInnerHTML={{__html: listItem}}></div></Item>
-            })}
+               <Item key={index}>
+                <div className="listItem">
+                  <ReactMarkdown children={item.steps} remarkPlugins={[remarkGfm]} />
+               </div>
+               </Item>
           </Well>
         );
       })}

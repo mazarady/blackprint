@@ -120,7 +120,7 @@ const AccordionItem = ({
         onClick={() => onClick(index)}
       >
         <span>Module {index}</span> {!showDescription ? item.title : ""}
-        <Time on={showDescription}>- {item.time} hours</Time>
+        <Time on={showDescription}>- {item.attributes.time} hours</Time>
       </H6>
     </StyledQA>
     <StyledQA on={showDescription}>
@@ -131,7 +131,7 @@ const AccordionItem = ({
       >
         <H2>{item.title}</H2>
         <H4>{item.desc}</H4>
-        <InstructWell instructions={item.instructions} />
+        <InstructWell instructions={item.attributes.instructions} />
       </div>
     </StyledQA>
   </ItemDiv>

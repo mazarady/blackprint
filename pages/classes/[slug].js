@@ -5,24 +5,24 @@ import Nav from "../../components/Nav";
 
 import { Fragment } from "react";
 
-export default function Classes({ classData }) {
-  const { data } = classData;
+export default function Classes({ classData, labData }) {
+const {0: {attributes: classAttrs}} = classData;
   return (
     <Fragment>
       <Nav />
       <Banner
-        title={data[0].title}
-        desc={data[0].desc}
-        level={data[0].level}
-        bg={data[0].bg}
+        title={classAttrs.title}
+        desc={classAttrs.desc}
+        level={classAttrs.level}
+        bg={classAttrs.bg}
       />
-      <Content content={data[0].content} labs={data[0].labs} />
+      <Content labs={labData} />
     </Fragment>
   );
 }
 
 export async function getStaticPaths() {
-  const paths = getAllClassIds();
+  const paths = await getAllClassIds();
   return {
     paths,
     fallback: false,
@@ -30,10 +30,13 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const classData = getClassData(params.id);
+  const data = await getClassData(params.slug);
+  const {data: {classData, labData}} = data;
   return {
     props: {
       classData,
+      labData
     },
   };
 }
+
