@@ -36,9 +36,13 @@ a {
     display: grid;
     grid-template-rows: 1fr;
     grid-row-gap: 5px;
+    padding-inline-start: 20px;
+    @media (min-width: 500px) {
+      padding-inline-start: 40px
+    }
   }
   img {
-    max-width: 320px;
+    max-width: 100%;
   }
 }
 code {
