@@ -16,7 +16,6 @@ const Well = styled.div`
 
 const StyledH6 = styled(H6)`
 line-height: 20px;
-padding-bottom: 15px;
 `
 
 const Title = styled.div`
@@ -24,15 +23,26 @@ const Title = styled.div`
 
 const Item = styled.div`
 a {
-  color: #A55858
+  color: #FF5349
 }
 .listItem {
   line-height: 1.3;
+  h5 {
+    font-weight: 400;
+    margin: 0;
+    padding-top: 2px;
+  }
   ul {
     display: grid;
     grid-template-rows: 1fr;
     grid-row-gap: 5px;
   }
+  img {
+    max-width: 320px;
+  }
+}
+code {
+  color: #FF5349;
 }
 `;
 
