@@ -39,8 +39,12 @@
         "desc": "In this module, you'll learn how to perform basic arithmetic, understand functions, parameters, and arguments. The primary function used throughout this module is called the factorial function (written in mathematical notation with an exclamation point, so `n factorial` would be n!).",
         "instructions": [
           {
-            "title": "Setup",
-            "list": [""]
+            "title": "Basic Arithmetic",
+            "list": ["Open VS Code", "You should be met with a Getting Started page. Go ahead and select <i>New File</i>.", "Try printing the values of some expressions, like print(123 + 456) and print(2 ** 5) (** is the operator for exponents) and print(5 * 4 * 3 * 2 * 1).", "Type in some definitions, like number_of_students = 356 and number_of_staff = 16 and then try printing expressions like number_of_students / number_of_staff.", "That is, type the Python statement print(number_of_students / number_of_staff). At this point we'll just say 'print the expresion X' and you'll know to type the Python statement print(X) in your lab1.py file and then run it.", "save this file as your first iniitial, last name, and lab number--smasud__01"]
+          },
+          {
+            "title": "Factorial Function",
+            "list": ["The factorial function (written in mathematical notation with an exclamation point, so 'n factorial' would be n!) is used in calculating how many ways there are to arrange things (like the number of different ways to arrange five students in a row). The value of n! is n· (n-1)· (n-2)· ...· 1, so 5! = 5· 4· 3· 2· 1 = 120."]
           }
         ]
       }
