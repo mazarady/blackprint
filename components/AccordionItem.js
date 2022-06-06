@@ -33,7 +33,7 @@ const ItemDiv = styled.div`
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, max-content);
-    grid-column-gap: 15px;
+    grid-column-gap: 10px;
     border: none;
     background-color: transparent;
     padding: 0px;
@@ -119,7 +119,7 @@ const AccordionItem = ({
         className={`faq__question-button`}
         onClick={() => onClick(index)}
       >
-        <span>Module {index}</span> {!showDescription ? item.title : ""}
+        <span>Module {index}</span> {!showDescription ? item.attributes.title : ""}
         <Time on={showDescription}>- {item.attributes.time} hours</Time>
       </H6>
     </StyledQA>
@@ -129,8 +129,8 @@ const AccordionItem = ({
         data-qa="faq__desc"
         className={`faq__desc ${showDescription}`}
       >
-        <H2>{item.title}</H2>
-        <H4>{item.desc}</H4>
+        <H2>{item.attributes.title}</H2>
+        <H4>{item.attributes.desc}</H4>
         <InstructWell instructions={item.attributes.instructions} />
       </div>
     </StyledQA>
