@@ -38,7 +38,8 @@ const StyledH4 = styled.h4`
   font-family: "Karla", sans-serif;
   line-height: 38px;
   font-weight: 400;
-  margin: 0;
+  line-height: 1.3;
+  margin-top: 10px;
 `;
 
 export function H2({ children }) {
