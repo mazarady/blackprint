@@ -37,6 +37,7 @@ export async function getStaticProps({ params }) {
       classData,
       labData
     },
+    revalidate: 10, // In seconds
   };
 }
 
