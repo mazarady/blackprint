@@ -18,16 +18,11 @@ const StyledH5 = styled.h5`
 `;
 
 const StyledH6 = styled.h6`
+  font-size: 18px;
   font-family: "Karla", sans-serif;
+  line-height: 45px;
   font-weight: 600;
   margin: 0;
-  font-size: 14px;
-  line-height: 31px;
-  @media (min-width: 576px) {
-    font-size: 18px;
-    line-height: 45px;
-
-  }
 `;
 
 const StyledH2 = styled.h2`
