@@ -1,8 +1,6 @@
 import { getAllClassIds, getClassData } from "../../../lib/classes";
 import Banner from "../../../components/Banner";
 import Content from "../../../components/Content";
-import Nav from "../../../components/Nav";
-
 import { Fragment } from "react";
 
 export default function Classes({ classData, labData }) {
@@ -11,7 +9,6 @@ export default function Classes({ classData, labData }) {
   } = classData;
   return (
     <Fragment>
-      <Nav />
       <Banner
         title={classAttrs.title}
         desc={classAttrs.desc}

@@ -1,34 +1,23 @@
 import Nav from "../components/Nav";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import RegisterForm from "../components/RegisterForm";
+import LoginForm from "../components/LoginForm";
+import Modal from "../components/Modal";
+import { NavModalContext } from "../components/context/NavModalContext";
 
-// export default function Home() {
-//   return <Nav/>;
-// }
-import { useUser } from "../lib/useUser";
+const Home = () => {
+  const [modalOpen, setModalOpen] = useState(false);
 
-const Home = (data) => {
-  console.log(data.data.loginRes);
   return (
     <div>
-      <h1>Your Profile</h1>
-      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
+      <NavModalContext.Provider value={{ modalOpen, setModalOpen }}>
+        <Nav />
+        <Modal header="Register">
+          <RegisterForm />
+        </Modal>
+      </NavModalContext.Provider>
     </div>
   );
 };
-
-export async function getStaticProps() {
-  const loginInfo = {
-    identifier: "mazarady",
-    password: "Cool_1971",
-  };
-  const data = await useUser({ loginInfo });
-
-  return {
-    props: {
-      data,
-    },
-    revalidate: 10, // In seconds
-  };
-}
 
 export default Home;
