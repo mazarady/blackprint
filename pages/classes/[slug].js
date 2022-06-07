@@ -2,16 +2,25 @@ import { getAllClassIds, getClassData } from "../../lib/classes";
 import Banner from "../../components/Banner";
 import Content from "../../components/Content";
 import Nav from "../../components/Nav";
-
-import { Fragment } from "react";
+import LoginForm from "../../components/LoginForm";
+import Modal from "../../components/Modal";
+import { NavModalContext } from "../../components/context/NavModalContext";
+import { Fragment, useState } from "react";
 
 export default function Classes({ classData, labData }) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const {
     0: { attributes: classAttrs },
   } = classData;
   return (
     <Fragment>
-      <Nav />
+      <NavModalContext.Provider value={{ modalOpen, setModalOpen }}>
+        <Nav />
+        <Modal header="Login">
+          <LoginForm />
+        </Modal>
+      </NavModalContext.Provider>
       <Banner
         title={classAttrs.title}
         desc={classAttrs.desc}
