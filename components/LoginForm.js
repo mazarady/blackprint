@@ -19,7 +19,7 @@ const FormWrapper = styled.form`
   grid-row-gap: 10px;
 `;
 
-export default function LoginForm({ path }) {
+export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter()

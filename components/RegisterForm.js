@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import FormButton from "./FormButton";
 import { useUser } from "../lib/useUser";
+import {setCookie} from 'nookies'
 
 const Input = styled.input`
   height: 48px;
@@ -17,7 +18,7 @@ const FormWrapper = styled.form`
   grid-row-gap: 10px;
 `;
 
-export default function RegisterForm({ path }) {
+export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState('');
@@ -32,11 +33,14 @@ export default function RegisterForm({ path }) {
       };
       const res = await useUser({ reqInfo, type:'register' });
       const registerRes = await res.json();
-      console.log(res);
       if (res.status === 200) {
         setUsername("");
         setPassword("");
         setEmail('');
+        setCookie(null, 'jwt', registerRes.jwt, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/'
+        })
         // router.push('/classes/beginner')
         // setMessage("User created successfully");
       } else {
