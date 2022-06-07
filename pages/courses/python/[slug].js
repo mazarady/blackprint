@@ -6,7 +6,9 @@ import Nav from "../../../components/Nav";
 import { Fragment } from "react";
 
 export default function Classes({ classData, labData }) {
-const {0: {attributes: classAttrs}} = classData;
+  const {
+    0: { attributes: classAttrs },
+  } = classData;
   return (
     <Fragment>
       <Nav />
@@ -31,13 +33,15 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const data = await getClassData(params.slug);
-  const {data: {classData, labData}} = data;
+  const {
+    data: { classData, labData },
+  } = data;
+
   return {
     props: {
       classData,
-      labData
+      labData,
     },
     revalidate: 10, // In seconds
   };
 }
-

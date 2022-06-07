@@ -20,7 +20,6 @@ const LogoH3 = styled.h3`
   margin-top: 30px;
   @media (min-width: 1040px) {
     margin-left: 90px;
-
   }
 `;
 
@@ -29,6 +28,15 @@ export default function Nav({ content }) {
     <NavBar>
       <Link href="/">
         <LogoH3>blkprnt</LogoH3>
+      </Link>
+      <Link href="/classes">
+        <LogoH3>classes</LogoH3>
+      </Link>
+      <Link href="/login">
+        <LogoH3>login</LogoH3>
+      </Link>
+      <Link href="/sign up">
+        <LogoH3>sign up</LogoH3>
       </Link>
     </NavBar>
   );

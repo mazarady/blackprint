@@ -8,7 +8,6 @@ const Section = styled.section`
   padding-top: 45px;
   @media (min-width: 576px) {
     padding: 45px 40px 0px;
-
   }
   @media (min-width: 1400px) {
     margin-left: 70px;
