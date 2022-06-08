@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useContext } from "react";
 import { NavModalContext } from "./context/NavModalContext";
+import { parseCookies } from 'nookies'
 
 const NavBar = styled.nav`
   position: absolute;
@@ -25,18 +26,8 @@ const LogoH3 = styled.h3`
   }
 `;
 
-const LoginButton = styled.button`
-  background: transparent;
-  border: 0;
-  padding: 0;
-  margin: 0;
-`;
-
 export default function Nav() {
-  const { setModalOpen } = useContext(NavModalContext);
-  const handleLogin = () => setModalOpen(true);
-  const handleLogout = () => setModalOpen(false);
-
+  const jwt = parseCookies().jwt
   return (
     <NavBar>
       <Link href="/">
@@ -45,16 +36,15 @@ export default function Nav() {
       <Link href="/classes">
         <LogoH3>classes</LogoH3>
       </Link>
-      <LoginButton
-        onClick={() => {
-          handleLogin(true);
-        }}
-      >
+      {!jwt ? <><Link href="/login">
         <LogoH3>login</LogoH3>
-      </LoginButton>
-      <Link href="/sign-up">
-        <LogoH3>sign up</LogoH3>
       </Link>
+      <Link href="/register">
+        <LogoH3>sign up</LogoH3>
+      </Link></>: <Link href="/logout"><LogoH3>logout</LogoH3></Link>}
     </NavBar>
   );
 }
+
+
+

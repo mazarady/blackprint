@@ -41,7 +41,7 @@ export default function LoginForm() {
           maxAge: 30 * 24 * 60 * 60,
           path: '/'
         })
-        // router.push('/classes/beginner')
+        router.push('/')
         // setMessage("User created successfully");
       } else {
         // setMessage("Some error occured");

@@ -51,13 +51,13 @@ export default function Modal({ children, header }) {
       <Blur>
         <Wrapper>
           <H5>{header}</H5>
-          <CloseButton
+          {/* <CloseButton
             onClick={() => {
               handleLogout();
             }}
           >
             x
-          </CloseButton>
+          </CloseButton> */}
           {children}
         </Wrapper>
       </Blur>

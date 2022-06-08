@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import FormButton from "./FormButton";
 import { useUser } from "../lib/useUser";
+import { useRouter } from 'next/router'
 import {setCookie} from 'nookies'
 
 const Input = styled.input`
@@ -22,6 +23,7 @@ export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState('');
+  const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +35,7 @@ export default function RegisterForm() {
       };
       const res = await useUser({ reqInfo, type:'register' });
       const registerRes = await res.json();
+      console.log(registerRes);
       if (res.status === 200) {
         setUsername("");
         setPassword("");
@@ -41,7 +44,7 @@ export default function RegisterForm() {
           maxAge: 30 * 24 * 60 * 60,
           path: '/'
         })
-        // router.push('/classes/beginner')
+        router.push('/')
         // setMessage("User created successfully");
       } else {
         // setMessage("Some error occured");
