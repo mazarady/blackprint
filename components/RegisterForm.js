@@ -4,6 +4,7 @@ import FormButton from "./FormButton";
 import { useUser } from "../lib/useUser";
 import { useRouter } from 'next/router'
 import {setCookie} from 'nookies'
+import Loading from "./loading";
 
 const Input = styled.input`
   height: 48px;
@@ -16,28 +17,34 @@ const Input = styled.input`
 
 const FormWrapper = styled.form`
   display: grid;
-  grid-row-gap: 10px;
+  grid-row-gap: 15px;
 `;
 
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter()
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const reqInfo = {
+      username: username,
+      email: email,
+      password: password,
+    };
     try {
-      const reqInfo = {
-        username: username,
-        email: email,
-        password: password,
-      };
+
+      setLoading(true);
       const res = await useUser({ reqInfo, type:'register' });
       const registerRes = await res.json();
       if (res.status === 200) {
-        setUsername("");
-        setPassword("");
+        setLoading(false);
+        setUsername('');
+        setPassword('');
         setEmail('');
         setCookie(null, 'jwt', registerRes.jwt, {
           maxAge: 30 * 24 * 60 * 60,
@@ -46,6 +53,7 @@ export default function RegisterForm() {
         router.push('/')
         // setMessage("User created successfully");
       } else {
+        setLoading(false);
         // setMessage("Some error occured");
       }
     } catch (err) {
@@ -55,7 +63,7 @@ export default function RegisterForm() {
 
   return (
     <FormWrapper onSubmit={handleSubmit}>
-      <Input
+      {!loading ? <><Input
         type="email"
         id="email"
         name="email"
@@ -68,6 +76,8 @@ export default function RegisterForm() {
         type="text"
         id="username"
         name="username"
+        pattern=".{3,}"
+        title="3 characters minimum"
         required
         placeholder="Username"
         value={username}
@@ -78,13 +88,16 @@ export default function RegisterForm() {
         type="password"
         id="pass"
         name="pass"
+        pattern=".{6,}"
+        title="6 characters minimum"
         required
         placeholder="Password"
         value={password}
         onChange={(evt) => {setPassword(evt.target.value)}}
       />
 
-      <FormButton />
+      <FormButton /> </> : <Loading />}
+
     </FormWrapper>
   );
 }

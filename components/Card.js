@@ -12,9 +12,10 @@ const StyledCard = styled.div`
   .title {
     color: rgb(65, 91, 124);
     border-radius: 16px;
+
     text-align: center;
     background-color: ${props => props.bg};
-    padding: 35px 0px;
+    padding: 35px 10px;
   }
   .content {
     padding: 20px;
