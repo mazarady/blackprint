@@ -1,11 +1,5 @@
-import create from "zustand";
 import styled from "styled-components";
 import { H1, Sub } from "../components/Headers";
-const useStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-}));
 
 const HomeLayout = styled.section`
   min-height: 100vh;

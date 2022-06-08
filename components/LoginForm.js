@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import FormButton from "./FormButton";
-import { useState } from "react";
-import { useUser } from "../lib/useUser";
-import { useRouter } from 'next/router'
-import {setCookie} from 'nookies'
+import { useState, useContext } from "react";
 import Loading from "./loading";
+import AuthContext from "../context/AuthContext";
 
 const Input = styled.input`
   height: 48px;
@@ -20,36 +18,39 @@ const FormWrapper = styled.form`
   grid-row-gap: 15px;
 `;
 
+const Error = styled.p`
+  margin: 0;
+  color: red;
+  font-family: "Karla", sans-serif;
+  text-align: center;
+`;
+
 export default function LoginForm() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter()
+  const [error, setError] = useState("");
+  const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const reqInfo = {
-        identifier: username,
+        identifier: email,
         password: password,
       };
       setLoading(true);
-      const res = await useUser({ reqInfo });
-      const loginRes = await res.json();
-
+      const res = await fetch('/api/login', {
+        method: "POST",
+        body: JSON.stringify(reqInfo)
+      })
       if (res.status === 200) {
         setLoading(false);
-        // auth complete, so piece of state that updates accordingly
-        setCookie(null, 'jwt', loginRes.jwt, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: '/'
-        })
-        router.push('/')
-
-        // setMessage("User created successfully");
+        loginUser(email);
+        setError("");
       } else {
         setLoading(false);
-        // setMessage("Some error occured");
+        setError("Invalid credentials");
       }
     } catch (err) {
       console.log(err);
@@ -58,35 +59,40 @@ export default function LoginForm() {
 
   return (
     <FormWrapper onSubmit={handleSubmit}>
-      {!loading ? <>
-        <Input
-        type="text"
-        id="username"
-        name="username"
-        pattern=".{3,}"
-        title="3 characters minimum"
-        required
-        placeholder="Username"
-        value={username}
-        onChange={(e => {setUsername(e.target.value)})}
-      />
+      {!loading ? (
+        <>
+          {error && <Error>{error}</Error>}
+          <Input
+            type="text"
+            id="email"
+            name="email"
+            required
+            placeholder="Email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
 
-      <Input
-        type="password"
-        id="pass"
-        name="pass"
-        pattern=".{6,}"
-        title="6 characters minimum"
-        required
-        placeholder="Password"
-        value={password}
-        onChange={(e) => {setPassword(e.target.value)}}
+          <Input
+            type="password"
+            id="pass"
+            name="pass"
+            pattern=".{6,}"
+            title="6 characters minimum"
+            required
+            placeholder="Password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
 
-      />
-
-      <FormButton/>
-      </> : <Loading/>}
-
+          <FormButton />
+        </>
+      ) : (
+        <Loading />
+      )}
     </FormWrapper>
   );
 }

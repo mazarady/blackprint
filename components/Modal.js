@@ -42,7 +42,6 @@ const CloseButton = styled.div`
 `;
 
 export default function Modal({ children, header, open }) {
-
   return (
     open && (
       <Blur>

@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useContext, Fragment } from "react";
-import { NavModalContext } from "./context/NavModalContext";
-import { parseCookies } from 'nookies'
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const NavBar = styled.nav`
   position: absolute;
@@ -19,8 +18,11 @@ const NavBar = styled.nav`
 const SecondNav = styled.div`
   display: grid;
   grid-template-columns: repeat(3, max-content);
-  grid-column-gap: 30px;
-`
+  grid-column-gap: 20px;
+  h3 {
+    font-weight: 400;
+  }
+`;
 
 const LogoH3 = styled.h3`
   font-family: Arial;
@@ -34,7 +36,7 @@ const LogoH3 = styled.h3`
 `;
 
 export default function Nav() {
-  const jwt = parseCookies().jwt
+  const { user } = useContext(AuthContext);
   return (
     <NavBar>
       <Link href="/">
@@ -44,16 +46,21 @@ export default function Nav() {
         <Link href="/courses">
           <LogoH3>courses</LogoH3>
         </Link>
-        {!jwt ? <><Link href="/login">
-          <LogoH3>login</LogoH3>
-        </Link>
-        <Link href="/register">
-          <LogoH3>sign up</LogoH3>
-        </Link></>: <Link href="/logout"><LogoH3>logout</LogoH3></Link>}
+        {!user ? (
+          <>
+            <Link href="/login">
+              <LogoH3>login</LogoH3>
+            </Link>
+            <Link href="/register">
+              <LogoH3>sign up</LogoH3>
+            </Link>
+          </>
+        ) : (
+          <Link href="/logout">
+            <LogoH3>{user.email.split('@')[0]} (logout)</LogoH3>
+          </Link>
+        )}
       </SecondNav>
     </NavBar>
   );
 }
-
-
-

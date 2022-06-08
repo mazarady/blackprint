@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 import FormButton from "./FormButton";
 import { useUser } from "../lib/useUser";
-import { useRouter } from 'next/router'
-import {setCookie} from 'nookies'
+import { setCookie } from "nookies";
 import Loading from "./loading";
+import AuthContext from "../context/AuthContext";
 
 const Input = styled.input`
   height: 48px;
@@ -23,11 +23,9 @@ const FormWrapper = styled.form`
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter()
-
-
+  const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,20 +35,20 @@ export default function RegisterForm() {
       password: password,
     };
     try {
-
       setLoading(true);
-      const res = await useUser({ reqInfo, type:'register' });
+      const res = await useUser({ reqInfo, type: "register" });
       const registerRes = await res.json();
       if (res.status === 200) {
         setLoading(false);
-        setUsername('');
-        setPassword('');
-        setEmail('');
-        setCookie(null, 'jwt', registerRes.jwt, {
+        loginUser(username);
+        setUsername("");
+        setPassword("");
+        setEmail("");
+        setCookie(null, "jwt", registerRes.jwt, {
+          httpOnly: true,
           maxAge: 30 * 24 * 60 * 60,
-          path: '/'
-        })
-        router.push('/')
+          path: "/*",
+        });
         // setMessage("User created successfully");
       } else {
         setLoading(false);
@@ -63,41 +61,50 @@ export default function RegisterForm() {
 
   return (
     <FormWrapper onSubmit={handleSubmit}>
-      {!loading ? <><Input
-        type="email"
-        id="email"
-        name="email"
-        required
-        placeholder="Email"
-        value={email}
-        onChange={(evt) => {setEmail(evt.target.value)}}
-      />
-      <Input
-        type="text"
-        id="username"
-        name="username"
-        pattern=".{3,}"
-        title="3 characters minimum"
-        required
-        placeholder="Username"
-        value={username}
-        onChange={(evt) => {setUsername(evt.target.value)}}
-      />
-
-      <Input
-        type="password"
-        id="pass"
-        name="pass"
-        pattern=".{6,}"
-        title="6 characters minimum"
-        required
-        placeholder="Password"
-        value={password}
-        onChange={(evt) => {setPassword(evt.target.value)}}
-      />
-
-      <FormButton /> </> : <Loading />}
-
+      {!loading ? (
+        <>
+          <Input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="Email"
+            value={email}
+            onChange={(evt) => {
+              setEmail(evt.target.value);
+            }}
+          />
+          <Input
+            type="text"
+            id="username"
+            name="username"
+            pattern=".{3,}"
+            title="3 characters minimum"
+            required
+            placeholder="Username"
+            value={username}
+            onChange={(evt) => {
+              setUsername(evt.target.value);
+            }}
+          />
+          <Input
+            type="password"
+            id="pass"
+            name="pass"
+            pattern=".{6,}"
+            title="6 characters minimum"
+            required
+            placeholder="Password"
+            value={password}
+            onChange={(evt) => {
+              setPassword(evt.target.value);
+            }}
+          />
+          <FormButton />{" "}
+        </>
+      ) : (
+        <Loading />
+      )}
     </FormWrapper>
   );
 }

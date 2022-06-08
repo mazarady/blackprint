@@ -14,23 +14,34 @@ const StyledCard = styled.div`
     border-radius: 16px;
 
     text-align: center;
-    background-color: ${props => props.bg};
+    background-color: ${(props) => props.bg};
     padding: 35px 10px;
   }
   .content {
     padding: 20px;
-    font-family: 'Karla';
+    font-family: "Karla";
   }
-`
+`;
 
-export default function Card({title, time, difficulty, slug, bg}) {
+export default function Card({ title, time, difficulty, slug, bg }) {
   const router = useRouter();
   return (
     <Link href={`${router.pathname}/python/${slug}`}>
-    <StyledCard bg={bg}>
-      <div className="title"><H4>{title}</H4></div>
-      <div className="content">Course level: <strong>{difficulty === 0 ? 'beginner' : difficulty === '1' ? 'intermeidate' : 'advanced'}</strong></div>
-    </StyledCard>
-  </Link>
-)
+      <StyledCard bg={bg}>
+        <div className="title">
+          <H4>{title}</H4>
+        </div>
+        <div className="content">
+          Course level:{" "}
+          <strong>
+            {difficulty === 0
+              ? "beginner"
+              : difficulty === "1"
+              ? "intermeidate"
+              : "advanced"}
+          </strong>
+        </div>
+      </StyledCard>
+    </Link>
+  );
 }

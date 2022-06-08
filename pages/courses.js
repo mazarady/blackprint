@@ -8,9 +8,10 @@ export default function Courses({ data }) {
     <div>
       <Section />
       <CardWrapper>
-        {data.map((course) => {
+        {data.map((course, idx) => {
           return (
             <Card
+              key={idx}
               difficulty={course.attributes.level}
               title={course.attributes.title}
               slug={course.attributes.slug}
