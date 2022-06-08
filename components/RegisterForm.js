@@ -35,7 +35,6 @@ export default function RegisterForm() {
       };
       const res = await useUser({ reqInfo, type:'register' });
       const registerRes = await res.json();
-      console.log(registerRes);
       if (res.status === 200) {
         setUsername("");
         setPassword("");

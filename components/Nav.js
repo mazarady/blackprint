@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, Fragment } from "react";
 import { NavModalContext } from "./context/NavModalContext";
 import { parseCookies } from 'nookies'
 
@@ -8,7 +8,19 @@ const NavBar = styled.nav`
   position: absolute;
   top: 0;
   z-index: 5;
+  display: grid;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding: 30px 40px;
 `;
+
+const SecondNav = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  grid-column-gap: 30px;
+`
 
 const LogoH3 = styled.h3`
   font-family: Arial;
@@ -19,11 +31,6 @@ const LogoH3 = styled.h3`
   line-height: 25px;
   cursor: pointer;
   text-shadow: 3px 3px 0 #fff;
-  margin-left: 30px;
-  margin-top: 30px;
-  @media (min-width: 1040px) {
-    margin-left: 90px;
-  }
 `;
 
 export default function Nav() {
@@ -33,15 +40,17 @@ export default function Nav() {
       <Link href="/">
         <LogoH3>blkprnt</LogoH3>
       </Link>
-      <Link href="/classes">
-        <LogoH3>classes</LogoH3>
-      </Link>
-      {!jwt ? <><Link href="/login">
-        <LogoH3>login</LogoH3>
-      </Link>
-      <Link href="/register">
-        <LogoH3>sign up</LogoH3>
-      </Link></>: <Link href="/logout"><LogoH3>logout</LogoH3></Link>}
+      <SecondNav>
+        <Link href="/courses">
+          <LogoH3>courses</LogoH3>
+        </Link>
+        {!jwt ? <><Link href="/login">
+          <LogoH3>login</LogoH3>
+        </Link>
+        <Link href="/register">
+          <LogoH3>sign up</LogoH3>
+        </Link></>: <Link href="/logout"><LogoH3>logout</LogoH3></Link>}
+      </SecondNav>
     </NavBar>
   );
 }

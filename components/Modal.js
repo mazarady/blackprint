@@ -41,23 +41,13 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
-export default function Modal({ children, header }) {
-  const { modalOpen, setModalOpen } = useContext(NavModalContext);
-  const handleLogin = () => setModalOpen(true);
-  const handleLogout = () => setModalOpen(false);
+export default function Modal({ children, header, open }) {
 
   return (
-    modalOpen && (
+    open && (
       <Blur>
         <Wrapper>
           <H5>{header}</H5>
-          {/* <CloseButton
-            onClick={() => {
-              handleLogout();
-            }}
-          >
-            x
-          </CloseButton> */}
           {children}
         </Wrapper>
       </Blur>

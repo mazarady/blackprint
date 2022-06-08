@@ -74,6 +74,10 @@ const StyledQA = styled.div`
   padding: 0px 20px;
   transition: all 200ms ease-in-out;
 
+  h4 {
+    margin-top: 10px;
+  }
+
   @media (min-width: 576px) {
     padding: 0px 40px;
   }

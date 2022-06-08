@@ -39,7 +39,6 @@ const StyledH4 = styled.h4`
   line-height: 38px;
   font-weight: 400;
   line-height: 1.3;
-  margin-top: 10px;
 `;
 
 export function H2({ children }) {

@@ -37,11 +37,13 @@ export default function LoginForm() {
       if (res.status === 200) {
         setUsername("");
         setPassword("");
+        // auth complete, so piece of state that updates accordingly
         setCookie(null, 'jwt', loginRes.jwt, {
           maxAge: 30 * 24 * 60 * 60,
           path: '/'
         })
         router.push('/')
+
         // setMessage("User created successfully");
       } else {
         // setMessage("Some error occured");
