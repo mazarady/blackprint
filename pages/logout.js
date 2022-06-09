@@ -1,13 +1,12 @@
 import { useEffect, useContext } from "react";
-import { destroyCookie } from "nookies";
-import { useRouter } from "next/router";
 import AuthContext from "../context/AuthContext";
+import Head from "next/head";
 
 const Logout = () => {
   const { logoutUser } = useContext(AuthContext);
   const loggingOut = async () => {
     try {
-      await fetch("/api/logout");
+      await fetch("/api/logoutapi");
       logoutUser();
     } catch (err) {
       console.log(err);
@@ -16,7 +15,12 @@ const Logout = () => {
   useEffect(() => {
     loggingOut();
   }, []);
-  return <div></div>;
+  return (
+    <Head>
+      <title>Logout</title>
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    </Head>
+  );
 };
 
 export default Logout;

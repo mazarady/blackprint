@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { H1, Sub } from "../components/Headers";
+import Head from "next/head";
 
 const HomeLayout = styled.section`
   min-height: 100vh;
@@ -14,7 +15,7 @@ const HomeLayout = styled.section`
 `;
 
 const TextWrapper = styled.div`
-  margin-bottom: 15rem;
+  margin-bottom: 17rem;
   text-align: right;
   padding: 0px 20px;
   display: grid;
@@ -24,6 +25,10 @@ const TextWrapper = styled.div`
 const Home = () => {
   return (
     <HomeLayout>
+      <Head>
+        <title>Homepage</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <TextWrapper>
         <H1>Introducing Blackprint</H1>
         <Sub>Learn to code from professionals.</Sub>

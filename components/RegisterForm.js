@@ -36,7 +36,7 @@ export default function RegisterForm() {
     };
     try {
       setLoading(true);
-      const res = await fetch('/api/register', {
+      const res = await fetch('/api/registerapi', {
         method: "POST",
         body: JSON.stringify(reqInfo)
       });

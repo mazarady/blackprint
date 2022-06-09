@@ -22,6 +22,7 @@ const SecondNav = styled.div`
   h3 {
     font-weight: 400;
   }
+  transition: all 200ms ease-in-out;
 `;
 
 const LogoH3 = styled.h3`

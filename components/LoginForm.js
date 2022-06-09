@@ -40,7 +40,7 @@ export default function LoginForm() {
         password: password,
       };
       setLoading(true);
-      const res = await fetch('/api/login', {
+      const res = await fetch('/api/loginapi', {
         method: "POST",
         body: JSON.stringify(reqInfo)
       })

@@ -2,10 +2,15 @@ import styled from "styled-components";
 import Section from "../components/Section";
 import Card from "../components/Card";
 import CardWrapper from "../components/CardWrapper";
+import Head from "next/head";
 
 export default function Courses({ data }) {
   return (
     <div>
+      <Head>
+        <title>Courses</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Section />
       <CardWrapper>
         {data.map((course, idx) => {
