@@ -13,8 +13,15 @@ export const AuthProvider = ({children}) => {
   const checkUserLoggedIn = async () => {
     try {
       const res = await fetch('/api/cookie');
+      console.log(res);
       const json = await res.json();
-      console.log(json);
+      if(res.status == 200) {
+        console.log('here');
+        loginUser(json.username);
+      }
+      else {
+        loginUser('');
+      }
     }
     catch(err) {
     }

@@ -26,7 +26,7 @@ const Error = styled.p`
 `;
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -36,7 +36,7 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const reqInfo = {
-        identifier: email,
+        identifier: username,
         password: password,
       };
       setLoading(true);
@@ -46,7 +46,7 @@ export default function LoginForm() {
       })
       if (res.status === 200) {
         setLoading(false);
-        loginUser(email);
+        loginUser(username);
         setError("");
       } else {
         setLoading(false);
@@ -64,13 +64,15 @@ export default function LoginForm() {
           {error && <Error>{error}</Error>}
           <Input
             type="text"
-            id="email"
-            name="email"
+            id="username"
+            name="username"
             required
-            placeholder="Email"
-            value={email}
+            pattern=".{3,}"
+            title="3 characters minimum"
+            placeholder="Username"
+            value={username}
             onChange={(e) => {
-              setEmail(e.target.value);
+              setUsername(e.target.value);
             }}
           />
 
