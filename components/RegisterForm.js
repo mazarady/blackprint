@@ -36,23 +36,15 @@ export default function RegisterForm() {
     };
     try {
       setLoading(true);
-      const res = await useUser({ reqInfo, type: "register" });
-      const registerRes = await res.json();
+      const res = await fetch('/api/register', {
+        method: "POST",
+        body: JSON.stringify(reqInfo)
+      });
       if (res.status === 200) {
         setLoading(false);
         loginUser(username);
-        setUsername("");
-        setPassword("");
-        setEmail("");
-        setCookie(null, "jwt", registerRes.jwt, {
-          httpOnly: true,
-          maxAge: 30 * 24 * 60 * 60,
-          path: "/*",
-        });
-        // setMessage("User created successfully");
       } else {
         setLoading(false);
-        // setMessage("Some error occured");
       }
     } catch (err) {
       console.log(err);

@@ -12,7 +12,7 @@ export const AuthProvider = ({children}) => {
 
   const checkUserLoggedIn = async () => {
     try {
-      const res = await fetch('/api/cookie');
+      const res = await fetch('/api/getuser');
       console.log(res);
       const json = await res.json();
       if(res.status == 200) {
