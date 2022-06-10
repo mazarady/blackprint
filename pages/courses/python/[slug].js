@@ -1,4 +1,4 @@
-import { getAllClassIds, getClassData } from "../../../lib/classes";
+import { getClassData } from "../../../lib/courseHelpers";
 import Banner from "../../../components/Banner";
 import Content from "../../../components/Content";
 import { Fragment } from "react";
@@ -25,14 +25,6 @@ export default function Classes({ classData, labData }) {
     </Fragment>
   );
 }
-
-// export async function getStaticPaths() {
-//   const paths = await getAllClassIds();
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// }
 
 export async function getServerSideProps(ctx) {
   const cookies = nookies.get(ctx);

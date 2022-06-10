@@ -20,7 +20,7 @@ export const AuthProvider = ({children}) => {
       const res = await fetch('/api/getuser');
       const json = await res.json();
       const { username } = json;
-      if(res.status == 200) {
+      if(res.status == 200 && username) {
         setUser({ username });
       }
     }
