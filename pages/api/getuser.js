@@ -5,16 +5,18 @@ export default async (req, res) => {
   try {
     const jwt = parseCookies({ req }).jwt;
     const { id } = jwt_decode(jwt);
-    const fetchUser = await fetch(`http://localhost:1337/api/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    const reqJson = await fetchUser.json();
-    const { username } = reqJson;
-    res.status(200).send({ username });
+    if (id) {
+      let fetchUser = await fetch(`http://localhost:1337/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      let reqJson = await fetchUser.json();
+      let { username } = reqJson;
+      res.status(200).send({ username });
+    }
   } catch (err) {
-    res.status(400).send();
+    res.status(404).send();
   }
-  res.status(400).send();
+  res.status(404).send();
 };

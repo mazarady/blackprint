@@ -31,6 +31,18 @@ export const AuthProvider = ({children}) => {
   const loginUser = async (username) => {
     try {
       setUser({ username });
+      router.back();
+    }
+    catch(err) {
+      setUser(null);
+    }
+
+  };
+
+
+  const registerUser = async (username) => {
+    try {
+      setUser({ username });
       router.push('/');
     }
     catch(err) {
@@ -49,7 +61,7 @@ export const AuthProvider = ({children}) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user, loginUser, logoutUser, registerUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -36,7 +36,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const { loginUser } = useContext(AuthContext);
+  const { registerUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export default function RegisterForm() {
       });
       if (res.status === 200) {
         setLoading(false);
-        loginUser(username);
+        registerUser(username);
       } else {
         setLoading(false);
       }

@@ -21,8 +21,25 @@ const SecondNav = styled.div`
   grid-column-gap: 20px;
   h3 {
     font-weight: 400;
+    &:after {
+      content: '';
+      width: 100%;
+      height: 2px;
+      background-color: black;
+      display: block;
+      top: 2px;
+      position: relative;
+      opacity: 0;
+      transition: opacity 200ms ease-in-out;
+    }
+    &:hover {
+      &:after {
+        opacity: 1;
+      }
+    }
   }
   transition: all 200ms ease-in-out;
+
 `;
 
 const LogoH3 = styled.h3`
