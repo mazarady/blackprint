@@ -3,6 +3,7 @@ import Banner from "../../../components/Banner";
 import Content from "../../../components/Content";
 import { Fragment } from "react";
 import nookies from "nookies";
+import Head from "next/head";
 
 export default function Classes({ classData, labData }) {
   const {
@@ -10,6 +11,10 @@ export default function Classes({ classData, labData }) {
   } = classData;
   return (
     <Fragment>
+      <Head>
+        <title>{classAttrs.title}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Banner
         title={classAttrs.title}
         desc={classAttrs.desc}
@@ -37,10 +42,20 @@ export async function getServerSideProps(ctx) {
     data: { classData, labData },
   } = data;
 
-  return {
-    props: {
-      classData,
-      labData,
-    },
-  };
+  if (labData) {
+    return {
+      props: {
+        classData,
+        labData,
+      },
+    };
+  } else {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 }

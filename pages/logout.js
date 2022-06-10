@@ -3,7 +3,12 @@ import AuthContext from "../context/AuthContext";
 import Head from "next/head";
 
 const Logout = () => {
-  const { logoutUser } = useContext(AuthContext);
+  const { user, logoutUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    loggingOut();
+  }, []);
+
   const loggingOut = async () => {
     try {
       await fetch("/api/logoutapi");
@@ -12,9 +17,7 @@ const Logout = () => {
       console.log(err);
     }
   };
-  useEffect(() => {
-    loggingOut();
-  }, []);
+
   return (
     <Head>
       <title>Logout</title>

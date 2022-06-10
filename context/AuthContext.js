@@ -10,31 +10,28 @@ export const AuthProvider = ({children}) => {
   const router = useRouter();
 
 
+  useEffect(() => {
+    checkUserLoggedIn();
+  }, []);
+
+
   const checkUserLoggedIn = async () => {
     try {
       const res = await fetch('/api/getuser');
-      console.log(res);
       const json = await res.json();
+      const { username } = json;
       if(res.status == 200) {
-        console.log('here');
-        loginUser(json.username);
-      }
-      else {
-        loginUser('');
+        setUser({ username });
       }
     }
     catch(err) {
     }
   }
 
-  useEffect(() => {
-    checkUserLoggedIn();
-  }, [])
-
-  const loginUser = async (email) => {
+  const loginUser = async (username) => {
     try {
-      setUser({ email });
-      router.push("/");
+      setUser({ username });
+      router.push('/');
     }
     catch(err) {
       setUser(null);
@@ -44,11 +41,10 @@ export const AuthProvider = ({children}) => {
 
   const logoutUser = async () => {
     try {
+      router.push('/')
       setUser(null);
-      router.push('/');
     }
     catch(err) {
-
     }
   };
 

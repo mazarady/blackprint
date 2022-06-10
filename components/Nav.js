@@ -50,15 +50,12 @@ export default function Nav() {
         {!user ? (
           <>
             <Link href="/login">
-              <LogoH3>login</LogoH3>
-            </Link>
-            <Link href="/register">
-              <LogoH3>sign up</LogoH3>
+              <LogoH3>login/register</LogoH3>
             </Link>
           </>
         ) : (
           <Link href="/logout">
-            <LogoH3>{user.email.split('@')[0]} (logout)</LogoH3>
+            <LogoH3>{user.username} (logout)</LogoH3>
           </Link>
         )}
       </SecondNav>

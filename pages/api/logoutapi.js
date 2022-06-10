@@ -5,5 +5,5 @@ export default async (req, res) => {
     path: "/",
   });
 
-  res.status(200).end();
+  res.status(200).send();
 };

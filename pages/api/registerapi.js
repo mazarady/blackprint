@@ -19,8 +19,8 @@ export default async (req, res) => {
       path: "/",
     });
 
-    res.status(postRes.status).end();
+    res.status(postRes.status).send();
   } catch (e) {
-    res.status(400);
+    res.status(400).send();
   }
 };

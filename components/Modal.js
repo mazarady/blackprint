@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   h5 {
     padding-bottom: 30px;
     text-align: center;
+    color: #4C9194;
   }
   max-width: 400px;
   padding: 35px 20px;

@@ -12,9 +12,9 @@ export default async (req, res) => {
     });
     const reqJson = await fetchUser.json();
     const { username } = reqJson;
-    res.status(200).send({ username }).end();
+    res.status(200).send({ username });
   } catch (err) {
-    res.status(400);
+    res.status(400).send();
   }
-  res.status(400).end();
+  res.status(400).send();
 };
