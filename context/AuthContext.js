@@ -1,63 +1,51 @@
 import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { parseCookies } from 'nookies'
+import { parseCookies } from "nookies";
 
 const AuthContext = createContext();
 
-
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const router = useRouter();
-
 
   useEffect(() => {
     checkUserLoggedIn();
   }, []);
 
-
   const checkUserLoggedIn = async () => {
     try {
-      const res = await fetch('/api/getuser');
+      const res = await fetch("/api/getuser");
       const json = await res.json();
       const { username } = json;
-      if(res.status == 200 && username) {
+      if (res.status == 200 && username) {
         setUser({ username });
       }
-    }
-    catch(err) {
-    }
-  }
+    } catch (err) {}
+  };
 
   const loginUser = async (username) => {
     try {
       setUser({ username });
       router.back();
-    }
-    catch(err) {
+    } catch (err) {
       setUser(null);
     }
-
   };
-
 
   const registerUser = async (username) => {
     try {
       setUser({ username });
-      router.push('/');
-    }
-    catch(err) {
+      router.push("/");
+    } catch (err) {
       setUser(null);
     }
-
   };
 
   const logoutUser = async () => {
     try {
-      router.push('/')
+      router.push("/");
       setUser(null);
-    }
-    catch(err) {
-    }
+    } catch (err) {}
   };
 
   return (
@@ -68,4 +56,3 @@ export const AuthProvider = ({children}) => {
 };
 
 export default AuthContext;
-

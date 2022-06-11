@@ -11,20 +11,26 @@ const HomeLayout = styled.section`
   background-image: url("/forest.webp");
   background-repeat: no-repeat;
   background-position: center bottom;
-  background-size: 100%;
+  background-size: 250%;
+  @media (min-width: 576px) {
+    background-size: 100%;
+  }
 `;
 
 const TextWrapper = styled.div`
-  margin-bottom: 17rem;
+  margin-bottom: 8rem;
   text-align: right;
   padding: 0px 20px;
   display: grid;
   grid-row-gap: 7px;
+  @media (min-width: 576px) {
+    margin-bottom: 17rem;
+  }
 `;
 
 const Home = () => {
   return (
-    <HomeLayout>
+    <HomeLayout className="modal">
       <Head>
         <title>Home</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />

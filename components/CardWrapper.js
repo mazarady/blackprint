@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   margin-top: 4rem;
   padding: 0px 3rem;
 
-  @media(min-width: 1020px) {
+  @media (min-width: 1020px) {
     margin-top: 9rem;
     padding: 0px 6rem;
   }

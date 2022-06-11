@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   h5 {
     padding-bottom: 30px;
     text-align: center;
-    color: #4C9194;
+    color: #4c9194;
   }
   max-width: 400px;
   padding: 35px 20px;
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   width: 100%;
   border-radius: 16px;
 
-  @media (min-width: 960px){
+  @media (min-width: 960px) {
     position: relative;
     max-width: initial;
     top: initial;
@@ -41,15 +41,17 @@ const Blur = styled.div`
   height: 100vh;
   width: 100vw;
   opacity: 0.8;
-  background-color: #4C9194;
-  @media (min-width: 960px){
+  background-color: #4c9194;
+  @media (min-width: 960px) {
     background-color: #e5e5f7;
-    background-image:  linear-gradient(135deg, #4C9194 25%, transparent 25%), linear-gradient(225deg, #4C9194 25%, transparent 25%), linear-gradient(45deg, #4C9194 25%, transparent 25%), linear-gradient(315deg, #4C9194 25%, #e5e5f7 25%);
-    background-position:  10px 0, 10px 0, 0 0, 0 0;
+    background-image: linear-gradient(135deg, #4c9194 25%, transparent 25%),
+      linear-gradient(225deg, #4c9194 25%, transparent 25%),
+      linear-gradient(45deg, #4c9194 25%, transparent 25%),
+      linear-gradient(315deg, #4c9194 25%, #e5e5f7 25%);
+    background-position: 10px 0, 10px 0, 0 0, 0 0;
     background-size: 20px 20px;
     background-repeat: repeat;
   }
-
 `;
 
 const CloseButton = styled.div`

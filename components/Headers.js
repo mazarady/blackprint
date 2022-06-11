@@ -42,10 +42,13 @@ const StyledH4 = styled.h4`
 `;
 
 const StyledH1 = styled.h1`
-  font-size: 88px;
   font-family: "Karla", sans-serif;
   margin: 0;
   color: #3f3343;
+  font-size: 58px;
+  @media (min-width: 576px) {
+    font-size: 88px;
+  }
 `;
 
 const StyledSub = styled.h3`

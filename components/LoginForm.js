@@ -27,16 +27,15 @@ const Error = styled.p`
 `;
 
 const CenterLink = styled.a`
-  color: #4C9194;
+  color: #4c9194;
   font-weight: 500;
-`
+`;
 
 const StyledSpan = styled.span`
   font-family: "Karla", sans-serif;
   padding-top: 15px;
   text-align: center;
-`
-
+`;
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
@@ -53,10 +52,10 @@ export default function LoginForm() {
         password: password,
       };
       setLoading(true);
-      const res = await fetch('/api/loginapi', {
+      const res = await fetch("/api/loginapi", {
         method: "POST",
-        body: JSON.stringify(reqInfo)
-      })
+        body: JSON.stringify(reqInfo),
+      });
       if (res.status === 200) {
         setLoading(false);
         loginUser(username);
