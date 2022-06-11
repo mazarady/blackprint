@@ -52,10 +52,13 @@ const StyledH1 = styled.h1`
 `;
 
 const StyledSub = styled.h3`
-  font-size: 32px;
+  font-size: 22px;
   font-family: "Karla", sans-serif;
   margin: 0;
   color: #3f3343;
+  @media (min-width: 576px) {
+    font-size: 32px
+  }
 `;
 
 export function H2({ children }) {

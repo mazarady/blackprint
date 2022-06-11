@@ -12,7 +12,10 @@ const Wrapper = styled.div`
     text-align: center;
     color: #4c9194;
   }
-  max-width: 400px;
+  max-width: 350px;
+  @media (min-width: 576px) {
+    max-width: 400px;
+  }
   padding: 35px 20px;
   position: absolute;
   top: 50%;

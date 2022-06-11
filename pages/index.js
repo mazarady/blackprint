@@ -11,8 +11,26 @@ const HomeLayout = styled.section`
   background-image: url("/forest.webp");
   background-repeat: no-repeat;
   background-position: center bottom;
-  background-size: 250%;
+  background-size: 290%;
+  @media (min-width: 376px) {
+    background-size: 350%;
+  }
+  @media (min-width: 500px) {
+    background-size: 300%;
+  }
   @media (min-width: 576px) {
+    background-size: 220%;
+  }
+  @media (min-width: 768px) {
+    background-size: 175%;
+  }
+  @media (min-width: 920px) {
+    background-size: 160%;
+  }
+  @media (min-width: 1200px) {
+    background-size: 120%;
+  }
+  @media (min-width: 1400px) {
     background-size: 100%;
   }
 `;
@@ -23,6 +41,9 @@ const TextWrapper = styled.div`
   padding: 0px 20px;
   display: grid;
   grid-row-gap: 7px;
+  @media (min-width: 376px) {
+    margin-bottom: 18rem;
+  }
   @media (min-width: 576px) {
     margin-bottom: 17rem;
   }
