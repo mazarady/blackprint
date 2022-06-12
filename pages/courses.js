@@ -29,7 +29,7 @@ export default function Courses({ data }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`http://localhost:1337/api/classes`);
+  const res = await fetch(`${process.env.STRAPI_PUBLIC_BASE_URL}/classes`);
   const json = await res.json();
   const data = json.data;
   return {
