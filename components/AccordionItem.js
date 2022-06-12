@@ -26,7 +26,6 @@ const ItemDiv = styled.div`
     max-width: 350px;
     width: 100%;
     transition: all 200ms ease-in-out;
-
   }
 
   .faq__question-button {
@@ -46,7 +45,6 @@ const ItemDiv = styled.div`
     @media (min-width: 576px) {
       font-size: 18px;
       line-height: 45px;
-
     }
   }
 
@@ -59,8 +57,6 @@ const ItemDiv = styled.div`
     transition: all 200ms ease-in-out;
     max-width: 1200px;
     opacity: 0;
-
-
   }
   .faq__desc.show-description {
     max-height: 5000px;
@@ -78,10 +74,12 @@ const StyledQA = styled.div`
   padding: 0px 20px;
   transition: all 200ms ease-in-out;
 
+  h4 {
+    margin-top: 10px;
+  }
 
   @media (min-width: 576px) {
     padding: 0px 40px;
-
   }
   @media (min-width: 1400px) {
     margin-left: 70px;
@@ -102,13 +100,14 @@ const StyledQA = styled.div`
 const Time = styled.small`
   font-weight: 400;
   font-size: 14px;
-  ${({on}) => {
+  ${({ on }) => {
     if (!on) {
-      return css`margin-left: -5px;`
+      return css`
+        margin-left: -5px;
+      `;
     }
-
   }}
-`
+`;
 
 const AccordionItem = ({
   showDescription,
@@ -118,7 +117,7 @@ const AccordionItem = ({
   time,
   onClick,
 }) => (
-  <ItemDiv className="faq__question" key={item.id} on={showDescription} >
+  <ItemDiv className="faq__question" key={item.id} on={showDescription}>
     <StyledQA on={showDescription}>
       <H6
         aria-expanded={ariaExpanded[index]}
@@ -127,7 +126,8 @@ const AccordionItem = ({
         className={`faq__question-button`}
         onClick={() => onClick(index)}
       >
-        <span>Module {index}</span> {!showDescription ? item.attributes.title : ""}
+        <span>Module {index}</span>{" "}
+        {!showDescription ? item.attributes.title : ""}
         <Time on={showDescription}>- {item.attributes.time} hours</Time>
       </H6>
     </StyledQA>

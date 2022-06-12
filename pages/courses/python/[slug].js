@@ -1,15 +1,20 @@
-import { getAllClassIds, getClassData } from "../../../lib/classes";
+import { getClassData } from "../../../lib/courseHelpers";
 import Banner from "../../../components/Banner";
 import Content from "../../../components/Content";
-import Nav from "../../../components/Nav";
-
 import { Fragment } from "react";
+import nookies from "nookies";
+import Head from "next/head";
 
 export default function Classes({ classData, labData }) {
-const {0: {attributes: classAttrs}} = classData;
+  const {
+    0: { attributes: classAttrs },
+  } = classData;
   return (
     <Fragment>
-      <Nav />
+      <Head>
+        <title>{classAttrs.title}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Banner
         title={classAttrs.title}
         desc={classAttrs.desc}
@@ -21,23 +26,28 @@ const {0: {attributes: classAttrs}} = classData;
   );
 }
 
-export async function getStaticPaths() {
-  const paths = await getAllClassIds();
-  return {
-    paths,
-    fallback: false,
-  };
-}
+export async function getServerSideProps(ctx) {
+  const cookies = nookies.get(ctx);
+  const { params } = ctx;
+  const data = await getClassData(params.slug, cookies.jwt);
+  const {
+    data: { classData, labData },
+  } = data;
 
-export async function getStaticProps({ params }) {
-  const data = await getClassData(params.slug);
-  const {data: {classData, labData}} = data;
-  return {
-    props: {
-      classData,
-      labData
-    },
-    revalidate: 10, // In seconds
-  };
+  if (labData) {
+    return {
+      props: {
+        classData,
+        labData,
+      },
+    };
+  } else {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 }
-

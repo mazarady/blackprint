@@ -39,7 +39,26 @@ const StyledH4 = styled.h4`
   line-height: 38px;
   font-weight: 400;
   line-height: 1.3;
-  margin-top: 10px;
+`;
+
+const StyledH1 = styled.h1`
+  font-family: "Karla", sans-serif;
+  margin: 0;
+  color: #3f3343;
+  font-size: 58px;
+  @media (min-width: 576px) {
+    font-size: 88px;
+  }
+`;
+
+const StyledSub = styled.h3`
+  font-size: 22px;
+  font-family: "Karla", sans-serif;
+  margin: 0;
+  color: #3f3343;
+  @media (min-width: 576px) {
+    font-size: 32px
+  }
 `;
 
 export function H2({ children }) {
@@ -60,4 +79,12 @@ export function H5({ children }) {
 
 export function H6({ children, ...rest }) {
   return <StyledH6 {...rest}>{children}</StyledH6>;
+}
+
+export function H1({ children, ...rest }) {
+  return <StyledH1 {...rest}>{children}</StyledH1>;
+}
+
+export function Sub({ children, ...rest }) {
+  return <StyledSub {...rest}>{children}</StyledSub>;
 }
