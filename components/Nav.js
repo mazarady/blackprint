@@ -207,23 +207,23 @@ export default function Nav() {
 
   return (
     <NavBar>
-      <Link href="/">
+      <Link href="/" passHref>
         <LogoH3 className="logo" navOpen={navOpen}>
           blkprnt
         </LogoH3>
       </Link>
       <SecondNav>
-        <Link href="/courses">
+        <Link href="/courses" passHref>
           <LogoH3>courses</LogoH3>
         </Link>
         {!user ? (
           <>
-            <Link href="/login">
+            <Link href="/login" passHref>
               <LogoH3>login/register</LogoH3>
             </Link>
           </>
         ) : (
-          <Link href="/logout">
+          <Link href="/logout" passHref>
             <LogoH3>{user.username} (logout)</LogoH3>
           </Link>
         )}
@@ -242,7 +242,7 @@ export default function Nav() {
         {navOpen &&
           ReactDOM.createPortal(
             <HamburgerNav>
-              <Link href="/courses">
+              <Link href="/courses" passHref>
                 <LogoH3
                   onClick={() => {
                     setNavOpen(!navOpen);
@@ -253,7 +253,7 @@ export default function Nav() {
               </Link>
               {!user ? (
                 <>
-                  <Link href="/login">
+                  <Link href="/login" passHref>
                     <LogoH3
                       onClick={() => {
                         setNavOpen(!navOpen);
@@ -264,7 +264,7 @@ export default function Nav() {
                   </Link>
                 </>
               ) : (
-                <Link href="/logout">
+                <Link href="/logout" passHref>
                   <LogoH3
                     onClick={() => {
                       setNavOpen(!navOpen);

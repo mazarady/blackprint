@@ -104,7 +104,7 @@ export default function LoginForm() {
 
           <FormButton />
           <StyledSpan>
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href="/register" passHref>
               <CenterLink> Sign Up</CenterLink>
             </Link>
