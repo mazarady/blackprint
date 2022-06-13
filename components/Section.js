@@ -7,7 +7,7 @@ const StyledSection = styled.section`
   text-align: center;
   display: grid;
   align-items: center;
-  background-image: url("/courses.png");
+  background-image: url("/courses.webp");
   background-size: 1050px;
   background-position: center 130px;
   background-repeat: no-repeat;
