@@ -48,7 +48,6 @@ const StyledDiv = styled.div`
 const StyledDesc = styled.div`
   line-height: 1.3;
   margin-bottom: 5px;
-
 `;
 
 export default function Banner({ title, desc, level, bg }) {

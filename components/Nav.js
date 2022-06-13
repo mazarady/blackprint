@@ -4,22 +4,8 @@ import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import { useState } from "react";
 import * as ReactDOM from "react-dom";
-
-const NavBar = styled.nav`
-  position: absolute;
-  top: 0;
-  z-index: 6;
-  display: grid;
-  grid-template-columns: max-content max-content;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  padding: 30px 20px;
-
-  @media (min-width: 920px) {
-    padding: 30px 40px;
-  }
-`;
+import NavBar from "./styles/NavBar";
+import LogoH3 from "./styles/LogoH3";
 
 const SecondNav = styled.div`
   display: grid;
@@ -51,28 +37,6 @@ const SecondNav = styled.div`
   }
 `;
 
-const LogoH3 = styled.h3`
-  font-family: Arial;
-  font-size: 23px;
-  letter-spacing: 2px;
-  color: #303030;
-  margin: 0;
-  line-height: 25px;
-  cursor: pointer;
-  text-shadow: 3px 3px 0 #fff;
-
-  &.logo {
-    ${({ navOpen }) =>
-      navOpen &&
-      `
-    color: white;
-    text-shadow: initial;
-    @media (min-width: 576px) {
-      color: #303030;
-      text-shadow: 3px 3px 0 #fff;
-    }`}
-  }
-`;
 
 const HamburgerNav = styled.div`
   grid-template-columns: max-content;

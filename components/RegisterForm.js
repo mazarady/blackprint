@@ -4,31 +4,10 @@ import FormButton from "./FormButton";
 import Loading from "./loading";
 import AuthContext from "../context/AuthContext";
 import Link from "next/link";
-
-const Input = styled.input`
-  height: 48px;
-  border-radius: 16px;
-  border: 1px solid gray;
-  padding-left: 15px;
-  font-size: 20px;
-  font-family: "Karla", sans-serif;
-`;
-
-const FormWrapper = styled.form`
-  display: grid;
-  grid-row-gap: 15px;
-`;
-
-const CenterLink = styled.a`
-  color: #4c9194;
-  font-weight: 500;
-`;
-
-const StyledSpan = styled.span`
-  font-family: "Karla", sans-serif;
-  padding-top: 15px;
-  text-align: center;
-`;
+import Input from "./styles/Input";
+import StyledSpan from "./styles/StyledSpan";
+import CenterLink from "./styles/CenterLink";
+import FormWrapper from "./styles/FormWrapper";
 
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -102,7 +81,7 @@ export default function RegisterForm() {
               setPassword(evt.target.value);
             }}
           />
-          <FormButton />
+          <FormButton text="Register your account" />
           <StyledSpan>
             Already have an account?
             <Link href="/login" passHref>
