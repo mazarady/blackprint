@@ -18,13 +18,18 @@ const Background = styled.div`
 `;
 
 const Wrapper = styled.div`
-  max-width: 660px;
+  max-width: 675px;
   margin: auto;
   width: 100%;
+  padding: 15px;
+
   h2 {
     color: #fdfdfd;
     text-align: center;
     margin-bottom: 50px;
+  }
+  @media (min-width: 576px) {
+    paddi
   }
 `;
 

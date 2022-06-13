@@ -49,7 +49,7 @@ const HamburgerNav = styled.div`
   justify-content: flex-end;
   top: 0;
   min-height: 100vh;
-  background: #303030;
+  background: #121418;
 
   padding: 4.8rem 22px;
   padding-left: 0px;
