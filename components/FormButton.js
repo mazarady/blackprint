@@ -17,14 +17,6 @@ const Button = styled.button`
     rgb(170, 178, 255),
     rgb(132, 255, 201)
   );
-  &:hover {
-    background: linear-gradient(
-      315deg,
-      rgb(132, 255, 201),
-      rgb(170, 178, 255),
-      rgb(236, 160, 255)
-    );
-  }
 `;
 
 const Arrow = styled.div``;
