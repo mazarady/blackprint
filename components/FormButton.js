@@ -9,8 +9,7 @@ const Button = styled.button`
   font-family: "Karla", sans-serif;
   border: 0px;
   position: relative;
-  text-align: left;
-  padding-left: 20px;
+  text-align: center;
   font-weight: 600;
   background: linear-gradient(
     315deg,
@@ -18,6 +17,14 @@ const Button = styled.button`
     rgb(170, 178, 255),
     rgb(132, 255, 201)
   );
+  &:hover {
+    background: linear-gradient(
+      315deg,
+      rgb(132, 255, 201),
+      rgb(170, 178, 255),
+      rgb(236, 160, 255)
+    );
+  }
 `;
 
 const Arrow = styled.div``;
@@ -25,7 +32,7 @@ const Arrow = styled.div``;
 export default function FormButton({ text }) {
   return (
     <Button type="submit">
-      {text} <Arrow />
+      {text}
     </Button>
   );
 }

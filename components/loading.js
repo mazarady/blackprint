@@ -8,7 +8,7 @@ const LoadingWrapper = styled.div`
 export default function Loading() {
   return (
     <LoadingWrapper>
-      <Triangle ariaLabel="loading-indicator" color="rgba(76, 145, 149)" />
+      <Triangle ariaLabel="loading-indicator" color="#E0A3FF" />
     </LoadingWrapper>
   );
 }

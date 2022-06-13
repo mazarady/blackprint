@@ -26,27 +26,26 @@ const Wrapper = styled.div`
   h2 {
     color: #fdfdfd;
     text-align: center;
-    margin-bottom: 50px;
-  }
-  @media (min-width: 576px) {
-    paddi
+    margin-bottom: 30px;
+    @media (min-width: 400px) {
+      margin-bottom: 50px;
+
+    }
   }
 `;
 
 export default function Modal({ children, header }) {
   return (
-    <div>
-      <Background>
-        <NavBar>
-          <Link href="/" passHref>
-            <LogoH3 className="logo">blkprnt</LogoH3>
-          </Link>
-        </NavBar>
-        <Wrapper>
-          <H2>{header}</H2>
-          {children}
-        </Wrapper>
-      </Background>
-    </div>
+    <Background>
+      <NavBar>
+        <Link href="/" passHref>
+          <LogoH3>blkprnt</LogoH3>
+        </Link>
+      </NavBar>
+      <Wrapper>
+        <H2>{header}</H2>
+        {children}
+      </Wrapper>
+    </Background>
   );
 }

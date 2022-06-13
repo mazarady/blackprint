@@ -37,7 +37,6 @@ const SecondNav = styled.div`
   }
 `;
 
-
 const HamburgerNav = styled.div`
   grid-template-columns: max-content;
   grid-template-rows: max-content max-content;

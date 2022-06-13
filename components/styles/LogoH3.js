@@ -23,4 +23,4 @@ const LogoH3 = styled.h3`
   }
 `;
 
-export default LogoH3
+export default LogoH3;
