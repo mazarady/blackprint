@@ -37,7 +37,7 @@ export default function Card({ title, time, difficulty, slug, bg }) {
             {difficulty === 0
               ? "beginner"
               : difficulty === 1
-              ? "intermeidate"
+              ? "intermediate"
               : "advanced"}
           </strong>
         </div>
