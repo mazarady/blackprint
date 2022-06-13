@@ -36,7 +36,7 @@ export default function Card({ title, time, difficulty, slug, bg }) {
           <strong>
             {difficulty === 0
               ? "beginner"
-              : difficulty === "1"
+              : difficulty === 1
               ? "intermeidate"
               : "advanced"}
           </strong>
