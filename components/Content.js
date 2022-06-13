@@ -22,8 +22,9 @@ export default function Content({ labs }) {
   return (
     <Fragment>
       <Section>
-        <H3>What&apos;s inside</H3>
-        <H5>This course contains {labs.length} interactive modules.</H5>
+        {labs.length > 0 ? <><H3>What&apos;s inside</H3>
+        <H5>This course contains {labs.length} interactive modules.</H5></>: <H3>Coming Soon...</H3>}
+
       </Section>
       <Labs labs={labs} />
     </Fragment>
