@@ -57,7 +57,7 @@ const StyledSub = styled.h3`
   margin: 0;
   color: #3f3343;
   @media (min-width: 576px) {
-    font-size: 32px
+    font-size: 32px;
   }
 `;
 
