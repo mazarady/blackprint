@@ -59,7 +59,7 @@ const ItemDiv = styled.div`
     opacity: 0;
   }
   .faq__desc.show-description {
-    max-height: 5000px;
+    max-height: 400rem;
     transition: all 200ms ease-in-out;
     opacity: 1;
     p {
