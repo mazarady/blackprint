@@ -18,7 +18,7 @@ const Section = styled.section`
   }
 `;
 
-export default function Content({ labs }) {
+export default function Content({ labs, titleID }) {
   return (
     <Fragment>
       <Section>
@@ -31,7 +31,7 @@ export default function Content({ labs }) {
           <H3>Coming Soon...</H3>
         )}
       </Section>
-      <Labs labs={labs} />
+      <Labs labs={labs} titleID={titleID} />
     </Fragment>
   );
 }

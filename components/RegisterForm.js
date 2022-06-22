@@ -29,9 +29,10 @@ export default function RegisterForm() {
         method: "POST",
         body: JSON.stringify(reqInfo),
       });
+      const { id } = await res.json();
       if (res.status === 200) {
         setLoading(false);
-        registerUser(username);
+        registerUser(username, id);
       } else {
         setLoading(false);
       }

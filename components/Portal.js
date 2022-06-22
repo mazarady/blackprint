@@ -29,7 +29,6 @@ const Wrapper = styled.div`
     margin-bottom: 30px;
     @media (min-width: 400px) {
       margin-bottom: 50px;
-
     }
   }
 `;

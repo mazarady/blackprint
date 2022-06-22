@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { H6 } from "./Headers";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import UploadFile from "./UploadFile";
 
 const Well = styled.div`
   height: auto;
@@ -47,7 +48,7 @@ const Item = styled.div`
   }
 `;
 
-export default function InstructWell({ instructions }) {
+export default function InstructWell({ instructions, titleID, labID }) {
   return (
     <div>
       {instructions.map((item, index) => {
@@ -61,6 +62,9 @@ export default function InstructWell({ instructions }) {
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {item.steps}
                 </ReactMarkdown>
+                {item.title.toLowerCase() === "submission" && (
+                  <UploadFile titleID={titleID} labID={labID} />
+                )}
               </div>
             </Item>
           </Well>

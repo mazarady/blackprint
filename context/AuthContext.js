@@ -6,6 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userID, setUserID] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,25 +17,28 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await fetch("/api/getuser");
       const json = await res.json();
-      const { username } = json;
+      const { username, id } = json;
       if (res.status == 200 && username) {
         setUser({ username });
+        setUserID({ id });
       }
     } catch (err) {}
   };
 
-  const loginUser = async (username) => {
+  const loginUser = async (username, id) => {
     try {
       setUser({ username });
+      setUserID({ id });
       router.back();
     } catch (err) {
       setUser(null);
     }
   };
 
-  const registerUser = async (username) => {
+  const registerUser = async (username, id) => {
     try {
       setUser({ username });
+      setUserID({ id });
       router.push("/");
     } catch (err) {
       setUser(null);
@@ -45,11 +49,14 @@ export const AuthProvider = ({ children }) => {
     try {
       router.push("/");
       setUser(null);
+      setUserID(null);
     } catch (err) {}
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser, registerUser }}>
+    <AuthContext.Provider
+      value={{ user, loginUser, logoutUser, registerUser, userID }}
+    >
       {children}
     </AuthContext.Provider>
   );

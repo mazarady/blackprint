@@ -35,9 +35,10 @@ export default function LoginForm() {
         method: "POST",
         body: JSON.stringify(reqInfo),
       });
+      const { id } = await res.json();
       if (res.status === 200) {
         setLoading(false);
-        loginUser(username);
+        loginUser(username, id);
         setError("");
       } else {
         setLoading(false);

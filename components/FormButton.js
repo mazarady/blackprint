@@ -22,9 +22,5 @@ const Button = styled.button`
 const Arrow = styled.div``;
 
 export default function FormButton({ text }) {
-  return (
-    <Button type="submit">
-      {text}
-    </Button>
-  );
+  return <Button type="submit">{text}</Button>;
 }

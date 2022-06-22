@@ -14,8 +14,7 @@ export default async (req, res) => {
       }
     );
     let reqJson = await fetchUser.json();
-    let { username } = reqJson;
-    res.status(200).send({ username });
+    res.status(200).send(reqJson);
   } catch (err) {
     res.status(404).send();
   }
