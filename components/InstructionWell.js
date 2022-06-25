@@ -23,16 +23,17 @@ const Item = styled.div`
     color: #ff5349;
   }
   .listItem {
-    line-height: 1.3;
+    line-height: 1.4;
     h5 {
       font-weight: 400;
       margin: 0;
       padding-top: 2px;
+      line-height: 1.3;
     }
     ul {
       display: grid;
       grid-template-rows: 1fr;
-      grid-row-gap: 5px;
+      grid-row-gap: 10px;
       padding-inline-start: 20px;
       @media (min-width: 500px) {
         padding-inline-start: 40px;
