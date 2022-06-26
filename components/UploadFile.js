@@ -55,7 +55,6 @@ export default function UploadFile({ titleID, labID }) {
   const [fileAdded, setFileAdded] = useState(false);
   const { userID } = useContext(AuthContext);
   const hiddenInputRef = useRef();
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -77,7 +76,7 @@ export default function UploadFile({ titleID, labID }) {
       setLoading(true);
       axios({
         method: "post",
-        url: "http://localhost:1337/api/hws",
+        url: `${process.env.BASE_URL}/hws`,
         data: formData,
       })
         .then(({ data }) => {

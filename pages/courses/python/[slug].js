@@ -9,7 +9,6 @@ export default function Classes({ classData, labData }) {
   const {
     0: { attributes: classAttrs, id },
   } = classData;
-  console.log(id);
   return (
     <Fragment>
       <Head>
