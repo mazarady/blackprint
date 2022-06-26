@@ -116,6 +116,8 @@ const AccordionItem = ({
   index,
   time,
   onClick,
+  titleID,
+  labID,
 }) => (
   <ItemDiv className="faq__question" key={item.id} on={showDescription}>
     <StyledQA on={showDescription}>
@@ -139,7 +141,11 @@ const AccordionItem = ({
       >
         <H2>{item.attributes.title}</H2>
         <H4>{item.attributes.desc}</H4>
-        <InstructWell instructions={item.attributes.instructions} />
+        <InstructWell
+          instructions={item.attributes.instructions}
+          titleID={titleID}
+          labID={labID}
+        />
       </div>
     </StyledQA>
   </ItemDiv>

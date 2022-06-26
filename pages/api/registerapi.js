@@ -11,6 +11,9 @@ export default async (req, res) => {
   try {
     const postRes = await useUser({ reqInfo, type: "register" });
     const registerRes = await postRes.json();
+    const {
+      user: { id, username },
+    } = registerRes;
 
     setCookie({ res }, "jwt", registerRes.jwt, {
       httpOnly: true,
@@ -19,7 +22,7 @@ export default async (req, res) => {
       path: "/",
     });
 
-    res.status(postRes.status).send();
+    res.status(postRes.status).send({ id, username });
   } catch (e) {
     res.status(400).send();
   }

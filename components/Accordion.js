@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AccordionItem from "./AccordionItem";
 
-const Accordion = ({ labs }) => {
+const Accordion = ({ labs, titleID }) => {
   const labsToggle = {};
   for (let i = 0; i < labs.length; i++) {
     labsToggle[i] = false;
@@ -20,6 +20,8 @@ const Accordion = ({ labs }) => {
         item={item}
         index={index}
         key={index}
+        titleID={titleID}
+        labID={item.id}
         onClick={(index) => {
           setActiveIndex({ ...activeIndex, [index]: !activeIndex[index] });
         }}

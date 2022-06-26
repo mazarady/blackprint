@@ -7,7 +7,7 @@ import Head from "next/head";
 
 export default function Classes({ classData, labData }) {
   const {
-    0: { attributes: classAttrs },
+    0: { attributes: classAttrs, id },
   } = classData;
   return (
     <Fragment>
@@ -21,7 +21,7 @@ export default function Classes({ classData, labData }) {
         level={classAttrs.level}
         bg={classAttrs.bg}
       />
-      <Content labs={labData} />
+      <Content labs={labData} titleID={id} />
     </Fragment>
   );
 }

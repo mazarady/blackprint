@@ -5,6 +5,9 @@ const nextConfig = {
     // Enables the styled-components SWC transform
     styledComponents: true,
   },
+  env: {
+    BASE_URL: process.env.STRAPI_PUBLIC_BASE_URL,
+  }
 };
 
 module.exports = nextConfig;
