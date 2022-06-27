@@ -132,10 +132,10 @@ export default function UploadFile({ titleID, labID, jwt }) {
       return `File size too big`;
     }
     else if (uploaded === 'no-file') {
-      return `Add a file by either Drag 'n' drop, or click to select files`
+      return `Add a file by either Drag 'n' drop, or click to select file`
     }
     else {
-      return `Drag 'n' drop some files here, or click to select files`;
+      return `Drag 'n' drop zipped file here, or click to select file`;
     }
   };
 
