@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import styled from "styled-components";
 import Loading from "./loading";
+import nookies from "nookies";
 
 const MAX_SIZE = 20971520;
 
@@ -48,7 +49,7 @@ const Dropzone = styled.div`
   }
 `;
 
-export default function UploadFile({ titleID, labID }) {
+export default function UploadFile({ titleID, labID, jwt }) {
   const [file, setFileName] = useState(null);
   const [uploaded, setUploaded] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -78,6 +79,9 @@ export default function UploadFile({ titleID, labID }) {
         method: "post",
         url: `${process.env.BASE_URL}/hws`,
         data: formData,
+        headers:{
+          Authorization: `Bearer ${jwt}`,
+        }
       })
         .then(({ data }) => {
           setUploaded("succ");

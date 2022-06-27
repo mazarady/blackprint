@@ -118,6 +118,7 @@ const AccordionItem = ({
   onClick,
   titleID,
   labID,
+  jwt
 }) => (
   <ItemDiv className="faq__question" key={item.id} on={showDescription}>
     <StyledQA on={showDescription}>
@@ -145,6 +146,7 @@ const AccordionItem = ({
           instructions={item.attributes.instructions}
           titleID={titleID}
           labID={labID}
+          jwt={jwt}
         />
       </div>
     </StyledQA>
