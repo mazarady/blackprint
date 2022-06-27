@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import nookies from "nookies";
 import Head from "next/head";
 
-export default function Classes({ classData, labData }) {
+export default function Classes({ classData, labData, cookies }) {
   const {
     0: { attributes: classAttrs, id },
   } = classData;
@@ -21,7 +21,7 @@ export default function Classes({ classData, labData }) {
         level={classAttrs.level}
         bg={classAttrs.bg}
       />
-      <Content labs={labData} titleID={id} />
+      <Content labs={labData} titleID={id} jwt={cookies.jwt} />
     </Fragment>
   );
 }
@@ -39,6 +39,7 @@ export async function getServerSideProps(ctx) {
       props: {
         classData,
         labData,
+        cookies,
       },
     };
   } else {

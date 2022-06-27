@@ -48,7 +48,7 @@ const Item = styled.div`
   }
 `;
 
-export default function InstructWell({ instructions, titleID, labID }) {
+export default function InstructWell({ instructions, titleID, labID, jwt }) {
   return (
     <div>
       {instructions.map((item, index) => {
@@ -63,7 +63,7 @@ export default function InstructWell({ instructions, titleID, labID }) {
                   {item.steps}
                 </ReactMarkdown>
                 {item.title.toLowerCase() === "submission" && (
-                  <UploadFile titleID={titleID} labID={labID} />
+                  <UploadFile titleID={titleID} labID={labID} jwt={jwt} />
                 )}
               </div>
             </Item>

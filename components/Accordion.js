@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AccordionItem from "./AccordionItem";
 
-const Accordion = ({ labs, titleID }) => {
+const Accordion = ({ labs, titleID, jwt }) => {
   const labsToggle = {};
   for (let i = 0; i < labs.length; i++) {
     labsToggle[i] = false;
@@ -18,6 +18,7 @@ const Accordion = ({ labs, titleID }) => {
         fontWeightBold={fontWeightBold}
         ariaExpanded={ariaExpanded}
         item={item}
+        jwt={jwt}
         index={index}
         key={index}
         titleID={titleID}
