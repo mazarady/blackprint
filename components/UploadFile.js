@@ -12,6 +12,9 @@ const HiddenInput = styled.input`
 `;
 
 const StyledSubmit = styled.input`
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
   background: transparent;
   padding: 15px;
   border-radius: 6px;
