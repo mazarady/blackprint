@@ -9,7 +9,6 @@ export default function Classes({ classData, labData, cookies }) {
   const {
     0: { attributes: classAttrs, id },
   } = classData;
-  labData.sort((a, b) => (a.attributes.number > b.attributes.number ? 1 : -1));
   return (
     <Fragment>
       <Head>
@@ -36,6 +35,9 @@ export async function getServerSideProps(ctx) {
   } = data;
 
   if (labData) {
+    labData.sort((a, b) =>
+      a.attributes.number > b.attributes.number ? 1 : -1
+    );
     return {
       props: {
         classData,
