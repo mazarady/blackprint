@@ -83,9 +83,9 @@ export default function UploadFile({ titleID, labID, jwt }) {
         method: "post",
         url: `${process.env.BASE_URL}/hws`,
         data: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${jwt}`,
-        }
+        },
       })
         .then(({ data }) => {
           setUploaded("succ");
@@ -97,9 +97,8 @@ export default function UploadFile({ titleID, labID, jwt }) {
           setFileAdded(false);
           setLoading(false);
         });
-    }
-    else {
-      setUploaded('no-file')
+    } else {
+      setUploaded("no-file");
     }
   };
 
@@ -111,8 +110,7 @@ export default function UploadFile({ titleID, labID, jwt }) {
       setFileName(files[0]);
       setFileAdded(true);
       setUploaded("");
-    }
-    else if (size >= MAX_SIZE) {
+    } else if (size >= MAX_SIZE) {
       setUploaded("big");
     }
   };
@@ -134,11 +132,9 @@ export default function UploadFile({ titleID, labID, jwt }) {
       return `File format not supported`;
     } else if (uploaded === "big") {
       return `File size too big`;
-    }
-    else if (uploaded === 'no-file') {
-      return `Add a file by either Drag 'n' drop, or click to select file`
-    }
-    else {
+    } else if (uploaded === "no-file") {
+      return `Add a file by either Drag 'n' drop, or click to select file`;
+    } else {
       return `Drag 'n' drop zipped file here, or click to select file`;
     }
   };

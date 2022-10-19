@@ -7,7 +7,7 @@ const nextConfig = {
   },
   env: {
     BASE_URL: process.env.STRAPI_PUBLIC_BASE_URL,
-  }
+  },
 };
 
 module.exports = nextConfig;

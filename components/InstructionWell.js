@@ -3,6 +3,7 @@ import { H6 } from "./Headers";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import UploadFile from "./UploadFile";
+import Recording from "./Recording";
 
 const Well = styled.div`
   height: auto;
@@ -60,9 +61,14 @@ export default function InstructWell({ instructions, titleID, labID, jwt }) {
             </Title>
             <Item key={index}>
               <div className="listItem">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {item.steps}
-                </ReactMarkdown>
+                {item.title.toLowerCase() === "lecture recording" && (
+                  <Recording data={JSON.parse(item.steps)} />
+                )}
+                {item.title.toLowerCase() !== "lecture recording" && (
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {item.steps}
+                  </ReactMarkdown>
+                )}
                 {item.title.toLowerCase() === "submission" && (
                   <UploadFile titleID={titleID} labID={labID} jwt={jwt} />
                 )}
