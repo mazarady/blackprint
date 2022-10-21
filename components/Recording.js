@@ -38,7 +38,7 @@ export default function Recording({ data }) {
     time = time.trim().split(":");
     let seconds;
     if (time.length === 3) {
-      seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+      seconds = (+time[0]) * 60 * 60 + (+time[1]) * 60 + (+time[2]);
     }
     else {
       seconds = +time[0] * 60 + +time[1];
