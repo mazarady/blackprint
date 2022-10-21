@@ -6,6 +6,7 @@ const StyledWrapper = styled.div`
   max-width: 720px;
   height: auto;
   border-radius: 6px;
+  margin-bottom: 15px;
 `;
 
 const StyledTime = styled.small`
@@ -25,7 +26,7 @@ const StyledTime = styled.small`
     }
 `
 
-export default function Recording({ data }) {
+export default function Recording(data) {
   let timeStampRefs;
   let tempRefs = [];
   for (let i = 0; i < data.data.length; i++) {
@@ -49,7 +50,7 @@ export default function Recording({ data }) {
     timeStampRefs.current[key].current.src = src + queryParam;
   };
 
-  const videos = data.data.map((link, key) => {
+  const videos = data.data.map(({title, loom, timestamps}, key) => {
     return (
       <StyledWrapper key={key}>
         <div
@@ -60,9 +61,10 @@ export default function Recording({ data }) {
             borderRadius: "inherit",
           }}
         >
+          <h4 style={{margin: 0, paddingBottom: '5px', fontFamily: 'Karla', fontWeight: 'initial'}}>{title}</h4>
           <iframe
             style={{ width: "100%", height: "450px", borderRadius: "inherit" }}
-            src={link.link}
+            src={loom}
             frameBorder="true"
             ref={timeStampRefs.current[key]}
             webkitallowfullscreen="true"
@@ -70,16 +72,17 @@ export default function Recording({ data }) {
             allowFullScreen
           ></iframe>
         </div>
-        {link.timestamps.map((link, index) => {
+        {timestamps.split(',').map((link, index) => {
+          const linkDesc = link.trim().split(' ');
           return (
             <div key={index}>
               <StyledTime
-                data-time={link.split(" ")[0]}
+                data-time={linkDesc[0]}
                 onClick={(evt) => {
                   onClickHandler(evt, key);
                 }}
               >
-                {link.split(" ")[0]}
+                {linkDesc[0]}
               </StyledTime>
               <small
                 style={{
@@ -87,7 +90,7 @@ export default function Recording({ data }) {
                   fontSize: "15.5px",
                 }}
               >
-                {" " + link.split(" ")[1]}
+                {" " + linkDesc[1]}
               </small>
             </div>
           );
@@ -95,6 +98,7 @@ export default function Recording({ data }) {
       </StyledWrapper>
     );
   });
+
 
   return videos;
 }
