@@ -50,6 +50,34 @@ export default function Recording(data) {
     timeStampRefs.current[key].current.src = src + queryParam;
   };
 
+  const renderTimeStamps = timestamps => {
+    return (
+      timestamps.split(',').map((link, index) => {
+        const linkDesc = link.trim().split(' ');
+        return (
+          <div key={index}>
+            <StyledTime
+              data-time={linkDesc[0]}
+              onClick={(evt) => {
+                onClickHandler(evt, key);
+              }}
+            >
+              {linkDesc[0]}
+            </StyledTime>
+            <small
+              style={{
+                fontFamily: "Karla",
+                fontSize: "15.5px",
+              }}
+            >
+              {" " + linkDesc[1]}
+            </small>
+          </div>
+        );
+      })
+    )
+  }
+
   const videos = data.data.map(({title, loom, timestamps}, key) => {
     return (
       <StyledWrapper key={key}>
@@ -72,29 +100,7 @@ export default function Recording(data) {
             allowFullScreen
           ></iframe>
         </div>
-        {timestamps.split(',').map((link, index) => {
-          const linkDesc = link.trim().split(' ');
-          return (
-            <div key={index}>
-              <StyledTime
-                data-time={linkDesc[0]}
-                onClick={(evt) => {
-                  onClickHandler(evt, key);
-                }}
-              >
-                {linkDesc[0]}
-              </StyledTime>
-              <small
-                style={{
-                  fontFamily: "Karla",
-                  fontSize: "15.5px",
-                }}
-              >
-                {" " + linkDesc[1]}
-              </small>
-            </div>
-          );
-        })}
+        {timestamps && renderTimeStamps(timestamps)}
       </StyledWrapper>
     );
   });
