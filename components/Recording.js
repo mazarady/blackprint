@@ -50,7 +50,7 @@ export default function Recording(data) {
     timeStampRefs.current[key].current.src = src + queryParam;
   };
 
-  const renderTimeStamps = timestamps => {
+  const renderTimeStamps = (timestamps, key) => {
     return (
       timestamps.split(',').map((link, index) => {
         const linkDesc = link.trim().split(' ');
@@ -100,7 +100,7 @@ export default function Recording(data) {
             allowFullScreen
           ></iframe>
         </div>
-        {timestamps && renderTimeStamps(timestamps)}
+        {timestamps && renderTimeStamps(timestamps, key)}
       </StyledWrapper>
     );
   });
