@@ -36,7 +36,13 @@ export default function Recording({ data }) {
   const onClickHandler = (evt, key) => {
     let time = evt.target.getAttribute("data-time");
     time = time.trim().split(":");
-    let seconds = +time[0] * 60 + +time[1];
+    let seconds;
+    if (time.length === 3) {
+      seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+    }
+    else {
+      seconds = +time[0] * 60 + +time[1];
+    }
     seconds.toString();
     const src = timeStampRefs.current[key].current.src.split("?")[0];
     const queryParam = `?t=${seconds}&autoplay=1`;
