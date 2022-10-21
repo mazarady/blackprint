@@ -61,14 +61,10 @@ export default function InstructWell({ instructions, titleID, labID, jwt }) {
             </Title>
             <Item key={index}>
               <div className="listItem">
-                {item.title.toLowerCase() === "lecture recording" && (
-                  <Recording data={JSON.parse(item.steps)} />
-                )}
-                {item.title.toLowerCase() !== "lecture recording" && (
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {item.steps}
-                  </ReactMarkdown>
-                )}
+                {item.videos && <Recording data={item.videos}/>}
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {item.steps}
+                </ReactMarkdown>
                 {item.title.toLowerCase() === "submission" && (
                   <UploadFile titleID={titleID} labID={labID} jwt={jwt} />
                 )}
