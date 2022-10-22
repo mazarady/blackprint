@@ -7,10 +7,13 @@ const StyledWrapper = styled.div`
   border-radius: 6px;
   margin: 15px 0px;
   display: grid;
-  grid-row-gap: 15px;
   @media (min-width: 990px) {
+    grid-row-gap: 0px;
     grid-template-columns: minmax(375px, 720px) 210px;
     grid-column-gap: 40px;
+  }
+  h4 {
+    grid-column: 1/-1;
   }
 `;
 
@@ -36,9 +39,13 @@ const StyledTimeStampWrapper = styled.div`
   display: grid;
   grid-row-gap: 5px;
   border-radius: inherit;
-  background: #E3ACB9;
+  background: #e3acb9;
   padding: 25px;
+  max-width: 210px;
+  margin-top: 15px;
   @media (min-width: 990px) {
+    margin: 0px;
+    max-width: initial;
   }
 `;
 
@@ -104,26 +111,26 @@ export default function Recording(data) {
   const videos = data.data.map(({ title, loom, timestamps }, key) => {
     return (
       <StyledWrapper key={key}>
+        {title && (
+          <h4
+            style={{
+              margin: 0,
+              paddingBottom: "5px",
+              fontFamily: "Karla",
+              fontWeight: "initial",
+            }}
+          >
+            {title}
+          </h4>
+        )}
         <div
           style={{
             width: "100%",
             height: "100%",
             borderRadius: "inherit",
-            lineHeight: "1",
+            lineHeight: "0",
           }}
         >
-          {title && (
-            <h4
-              style={{
-                margin: 0,
-                paddingBottom: "5px",
-                fontFamily: "Karla",
-                fontWeight: "initial",
-              }}
-            >
-              {title}
-            </h4>
-          )}
           <iframe
             style={{
               width: "100%",
