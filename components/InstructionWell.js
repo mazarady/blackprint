@@ -61,7 +61,7 @@ export default function InstructWell({ instructions, titleID, labID, jwt }) {
             </Title>
             <Item key={index}>
               <div className="listItem">
-                {item.videos && <Recording data={item.videos}/>}
+                {item.videos && <Recording data={item.videos} />}
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {item.steps}
                 </ReactMarkdown>
