@@ -101,7 +101,7 @@ export default function Recording(data) {
               color: "#433E40",
             }}
           >
-            {" " + linkDesc[1]}
+            {linkDesc.slice(1).map(desc => " " + desc)}
           </small>
         </div>
       );
