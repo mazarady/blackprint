@@ -9,7 +9,7 @@ const StyledWrapper = styled.div`
   display: grid;
   @media (min-width: 990px) {
     grid-row-gap: 0px;
-    grid-template-columns: minmax(375px, 720px) 210px;
+    grid-template-columns: minmax(375px, 720px) 240px;
     grid-column-gap: 40px;
   }
   h4 {
@@ -41,7 +41,7 @@ const StyledTimeStampWrapper = styled.div`
   border-radius: inherit;
   background: #e3acb9;
   padding: 25px;
-  max-width: 210px;
+  max-width: 240px;
   margin-top: 15px;
   @media (min-width: 990px) {
     margin: 0px;
