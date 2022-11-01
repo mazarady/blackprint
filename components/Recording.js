@@ -43,6 +43,8 @@ const StyledTimeStampWrapper = styled.div`
   padding: 25px;
   max-width: 240px;
   margin-top: 15px;
+  height: 480px;
+  overflow-y: scroll;
   @media (min-width: 990px) {
     margin: 0px;
     max-width: initial;
