@@ -4,7 +4,7 @@ const StyledH3 = styled.h3`
   font-size: 32px;
   font-family: "Karla", sans-serif;
   line-height: 40px;
-  color: rgb(43, 40, 57);
+  color: #3f3343;
   margin: 0;
 `;
 
@@ -13,12 +13,13 @@ const StyledH5 = styled.h5`
   font-weight: 400;
   font-family: "Karla", sans-serif;
   line-height: 28px;
-  color: rgb(43, 40, 57);
+  color: #3f3343;
   margin: 0;
 `;
 
 const StyledH6 = styled.h6`
   font-size: 18px;
+  color: #3f3343;
   font-family: "Karla", sans-serif;
   line-height: 45px;
   font-weight: 600;
@@ -28,6 +29,7 @@ const StyledH6 = styled.h6`
 const StyledH2 = styled.h2`
   font-size: 48px;
   font-family: "Karla", sans-serif;
+  color: #3f3343;
   line-height: 52px;
   font-weight: 700;
   margin: 0;
@@ -63,9 +65,9 @@ const StyledSub = styled.h3`
 
 const StyledSmall = styled.p`
   font-size: 16px;
+  color: #3f3343;
   font-family: "Karla", sans-serif;
   margin: 0;
-  color: rgb(43, 40, 57);
 `;
 
 export function H2({ children }) {

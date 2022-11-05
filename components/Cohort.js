@@ -6,7 +6,7 @@ import Button from "./Button";
 const StyledSection = styled.section`
   display: grid;
   justify-content: center;
-  padding: 110px 64px;
+  padding: 110px 0px;
   text-align: center;
   max-width: 765px;
   margin: auto;

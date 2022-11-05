@@ -16,7 +16,10 @@ const StyledSteps = styled.ul`
     padding: 0;
     margin: 0;
     list-style-type: none;
-    padding-bottom: 78px;
+
+    &:not(:last-of-type) {
+      padding-bottom: 78px;
+    }
     &:not(:first-of-type) {
       margin-top: 20px;
     }
