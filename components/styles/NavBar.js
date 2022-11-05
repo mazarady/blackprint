@@ -12,7 +12,7 @@ const NavBar = styled.nav`
   padding: 30px 20px;
 
   @media (min-width: 920px) {
-    padding: 30px 40px;
+    padding: 30px 64px;
   }
 `;
 

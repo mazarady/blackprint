@@ -66,8 +66,7 @@ const StyledSmall = styled.p`
   font-family: "Karla", sans-serif;
   margin: 0;
   color: rgb(43, 40, 57);
-
-`
+`;
 
 export function H2({ children }) {
   return <StyledH2>{children}</StyledH2>;
@@ -97,6 +96,6 @@ export function Sub({ children, ...rest }) {
   return <StyledSub {...rest}>{children}</StyledSub>;
 }
 
-export function Small({children, ...rest}) {
-  return <StyledSmall {...rest}>{children}</StyledSmall>
+export function Small({ children, ...rest }) {
+  return <StyledSmall {...rest}>{children}</StyledSmall>;
 }
