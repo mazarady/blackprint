@@ -8,14 +8,15 @@ const StyledSection = styled.section`
   justify-content: center;
   padding: 110px 64px;
   h6 {
-    margin-top: 24px;
+    margin-top: 12px;
   }
 `;
 
 const StyledImage = styled.div`
-  background-image: url("/job.webp");
-  background-position: 0px -93px;
+  background-image: url("/job.png");
+  background-position: top;
   height: 640px;
+  background-repeat: no-repeat;
 `;
 
 const StyledLeft = styled.div`
@@ -34,10 +35,9 @@ const BenefitsThree = () => {
     <StyledSection>
       <StyledLeft>
         <Small style={{ fontWeight: "600" }}>Feature Three</Small>
-        <H2>Describe benefit of feature three</H2>
+        <H2>Job Assitance</H2>
         <StyledH6>
-          Highlight Unique Selling Proposition (USP) with a short summary of the
-          key feature and how it benefits customers.
+          Our instructors provide you with the necesary tools to succesfully pass coding interviews.
         </StyledH6>
       </StyledLeft>
       <StyledImage></StyledImage>

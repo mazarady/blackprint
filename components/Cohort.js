@@ -27,7 +27,7 @@ const Cohort = () => {
     <StyledSection>
       <H2>Sign up for our next cohort</H2>
       <H5>
-        We add new students on a rolling basis. Add your email and we'll reach
+        We add new students on a rolling basis. Sign up below and we'll reach
         out when we've opened up registration
       </H5>
       <div

@@ -41,6 +41,7 @@ const StyledSteps = styled.ul`
 const StyledLeft = styled.div`
   p {
     padding-bottom: 16px;
+    font-weight: 600;
   }
 `;
 

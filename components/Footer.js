@@ -16,7 +16,7 @@ const StyledFooter = styled.footer`
     margin-top: 50px;
     width: 100%;
     height: 2px;
-    background: black;
+    background: #3f3343;
   }
 `;
 

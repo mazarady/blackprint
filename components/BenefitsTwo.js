@@ -8,12 +8,12 @@ const StyledSection = styled.section`
   justify-content: center;
   padding: 110px 64px;
   h6 {
-    margin-top: 24px;
+    margin-top: 12px;
   }
 `;
 
 const StyledImage = styled.div`
-  background-image: url("/collaboration.webp");
+  background-image: url("/collaboration2.png");
   background-position: 0px -53px;
   height: 640px;
 `;
@@ -35,7 +35,7 @@ const BenefitsTwo = () => {
       <StyledImage></StyledImage>
       <StyledRight>
         <Small style={{ fontWeight: "600" }}>Feature Two</Small>
-        <H2>Describe benefit of feature two</H2>
+        <H2>Collaboration</H2>
         <StyledH6>
           Highlight Unique Selling Proposition (USP) with a short summary of the
           key feature and how it benefits customers.
