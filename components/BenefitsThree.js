@@ -37,7 +37,8 @@ const BenefitsThree = () => {
         <Small style={{ fontWeight: "600" }}>Feature Three</Small>
         <H2>Job Assitance</H2>
         <StyledH6>
-          Our instructors provide you with the necesary tools to succesfully pass coding interviews.
+          Our instructors provide you with the necesary tools to succesfully
+          pass coding interviews.
         </StyledH6>
       </StyledLeft>
       <StyledImage></StyledImage>

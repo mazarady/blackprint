@@ -47,7 +47,7 @@ const StyledLeft = styled.div`
 
 const How = () => {
   return (
-    <StyledSection>
+    <StyledSection id="learn-more">
       <StyledLeft>
         <Small>How it works</Small>
         <H2>Headline with USP related to how your product or service works</H2>
