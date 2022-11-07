@@ -13,7 +13,7 @@ const StyledSection = styled.section`
 `;
 
 const StyledImage = styled.div`
-  background-image: url("/online.gif");
+  background-image: url("/online.png");
   background-position: center;
   height: 640px;
 `;

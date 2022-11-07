@@ -30,11 +30,10 @@ const Questions = () => {
       <div className="questions">
         <H6>What is the time commitment?</H6>
         <Small>
-          Our courses are split up in 4 parts, with each consisting of a
-          duration of 3 months. Lectures are recorded and range from 1-2 hours
-          and are accompanied by live lab sessions lasting about an hour. Your
-          weekly commitment therefore, with the additon of homework, should be
-          around 5-6 hours.
+          Our courses are split up in 4 parts, each lasting up to 3 months.
+          Lectures are recorded and range from 1-2 hours and are accompanied by live 1-hour lab
+          sessions. Your weekly commitment therefore, with the additon
+          of homework, should be on average around 7-8 hours.
         </Small>
         <H6>Am I guarenteed a job after completing your course?</H6>
         <Small>

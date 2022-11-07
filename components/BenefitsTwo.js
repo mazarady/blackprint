@@ -13,9 +13,11 @@ const StyledSection = styled.section`
 `;
 
 const StyledImage = styled.div`
-  background-image: url("/collaboration2.png");
+  background-image: url("/collaboration.png");
   background-position: 0px -53px;
   height: 640px;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 const StyledRight = styled.div`
