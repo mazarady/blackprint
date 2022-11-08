@@ -108,9 +108,9 @@ export default function Banner({ title, desc, level, bg }) {
           Course Level: {levelText} {renderIcons()}
         </div>
       </StyledDiv>
-      <div style={{ position: "absolute", top: "0" }}>
+      {/* <div style={{ position: "absolute", top: "0" }}>
         <Triangles />
-      </div>
+      </div> */}
     </StyledBanner>
   );
 }
