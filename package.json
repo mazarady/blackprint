@@ -13,6 +13,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.4.6",
     "axios": "^0.27.2",
     "css-doodle": "^0.27.1",
     "gray-matter": "^4.0.3",
