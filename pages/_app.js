@@ -8,7 +8,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthProvider>
-      {router.pathname != "/register" && router.pathname != "/login" && <Nav />}
+      {router.pathname != "/register" &&
+        router.pathname != "/code" &&
+        router.pathname != "/login" && <Nav />}
       <Component {...pageProps} />
     </AuthProvider>
   );
