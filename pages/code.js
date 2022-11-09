@@ -129,7 +129,7 @@ export default function Code({ data }) {
           width={`100%`}
           theme="vs-dark"
           defaultLanguage="python"
-          defaultValue="// some comment"
+          defaultValue="# some comment"
           onChange={(e) => {
             setSourceCode(e);
           }}
