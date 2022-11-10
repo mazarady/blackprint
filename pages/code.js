@@ -42,6 +42,7 @@ export default function Code({ data }) {
   const [sourceCode, setSourceCode] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
+  const [error, setError] = useState("");
 
   const handleCompile = (e) => {
     setProcessing(true);
@@ -54,7 +55,7 @@ export default function Code({ data }) {
     };
     const options = {
       method: "POST",
-      url: process.env.NEXT_PUBLIC_RAPID_API_URL,
+      url: process.env.NEXT_PUBLIC_RAPID_API_URL + "/?wait=true",
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         "content-type": "application/json",
@@ -67,12 +68,22 @@ export default function Code({ data }) {
     axios
       .request(options)
       .then(function (response) {
-        console.log("res.data", response.data);
-        const token = response.data.token;
-        fetchOutput(token);
+        console.log(response.data);
+        if (response.data.stderr) {
+          setOutput(response.data.stderr);
+          setError(true);
+        } else {
+          setOutput(response.data.stdout);
+          setError(false);
+        }
+
+        setProcessing(false);
       })
       .catch((err) => {
         let error = err.response ? err.response.data : err;
+        setProcessing(false);
+        setError(true);
+        setOutput(error);
         // get error status
         let status = err.response.status;
         console.log("status", status);
@@ -82,39 +93,6 @@ export default function Code({ data }) {
         setProcessing(false);
         console.log("catch block...", error);
       });
-  };
-
-  const fetchOutput = async (token) => {
-    const options = {
-      method: "GET",
-      url: process.env.NEXT_PUBLIC_RAPID_API_URL + "/" + token,
-      params: { base64_encoded: "true", fields: "*" },
-      headers: {
-        "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
-        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
-      },
-    };
-    try {
-      let response = await axios.request(options);
-      let statusId = response.data.status?.id;
-
-      // Processed - we have a result
-      if (statusId === 1 || statusId === 2) {
-        // still processing
-        setTimeout(() => {
-          checkStatus(token);
-        }, 2000);
-        return;
-      } else {
-        setProcessing(false);
-        console.log("response.data", response.data);
-        setOutput(response.data.stdout);
-        return;
-      }
-    } catch (err) {
-      setProcessing(false);
-      console.log("err", err);
-    }
   };
 
   return (
@@ -138,7 +116,7 @@ export default function Code({ data }) {
       <StyledRight>
         <div className="output">
           <StyledH5>Output</StyledH5>
-          <Output>{output && atob(output)}</Output>
+          <Output error={error}>{output && atob(output)}</Output>
         </div>
         <div
           className="input-compile"

@@ -10,13 +10,13 @@ const StyledOutput = styled.div`
   border: 1px solid black;
   margin: 10px 0px;
   background: #1E293B;
-  color: #22C55E;
+  color: ${({error}) => error ? 'red': '#22C55E' }
 
 `;
 
-export default function Output({ children }) {
+export default function Output({ error, children }) {
   return (
-    <StyledOutput>
+    <StyledOutput error={error}>
       <pre>{children}</pre>
     </StyledOutput>
   );
