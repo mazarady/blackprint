@@ -111,6 +111,9 @@ export default function Code({ data }) {
           onChange={(e) => {
             setSourceCode(e);
           }}
+          options={{
+            fontSize: "16px",
+          }}
         />
       </div>
       <StyledRight>

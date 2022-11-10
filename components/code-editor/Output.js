@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyledOutput = styled.div`
-  height: 200px;
+  height: 500px;
   width: 566px;
   border-radius: 6px;
   font-family: 'Karla';
@@ -10,8 +10,8 @@ const StyledOutput = styled.div`
   border: 1px solid black;
   margin: 10px 0px;
   background: #1E293B;
-  color: ${({error}) => error ? 'red': '#22C55E' }
-
+  color: ${({error}) => error ? 'red': '#22C55E' };
+  overflow-y: scroll;
 `;
 
 export default function Output({ error, children }) {
