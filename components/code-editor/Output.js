@@ -10,13 +10,20 @@ const StyledOutput = styled.div`
   border: 1px solid black;
   margin: 10px 0px;
   background: #1E293B;
-  color: #22C55E;
+  color: ${(props) => props.error ? 'red': '#22C55E'};
+  pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+  }
 
 `;
 
-export default function Output({ children }) {
+export default function Output({ error, children }) {
   return (
-    <StyledOutput>
+    <StyledOutput error={error}>
       <pre>{children}</pre>
     </StyledOutput>
   );

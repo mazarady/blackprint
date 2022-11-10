@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Editor from "@monaco-editor/react";
-import axios from "axios";
 import { useState } from "react";
 import Output from "../components/code-editor/Output";
 import { H5 } from "../components/Headers";
@@ -42,78 +41,26 @@ export default function Code({ data }) {
   const [sourceCode, setSourceCode] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
+  const [error, setError] = useState(false);
 
-  const handleCompile = (e) => {
+  const handleCompile = async (e) => {
     setProcessing(true);
     e.preventDefault();
-    const formData = {
-      language_id: "71",
-      // encode source code in base64
-      source_code: btoa(sourceCode),
-      stdin: btoa(customInput),
-    };
-    const options = {
+    const res = await fetch("/api/compile", {
       method: "POST",
-      url: process.env.NEXT_PUBLIC_RAPID_API_URL,
-      params: { base64_encoded: "true", fields: "*" },
-      headers: {
-        "content-type": "application/json",
-        "Content-Type": "application/json",
-        "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
-        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
-      },
-      data: formData,
-    };
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log("res.data", response.data);
-        const token = response.data.token;
-        fetchOutput(token);
-      })
-      .catch((err) => {
-        let error = err.response ? err.response.data : err;
-        // get error status
-        let status = err.response.status;
-        console.log("status", status);
-        if (status === 429) {
-          console.log("too many requests", status);
-        }
-        setProcessing(false);
-        console.log("catch block...", error);
-      });
-  };
-
-  const fetchOutput = async (token) => {
-    const options = {
-      method: "GET",
-      url: process.env.NEXT_PUBLIC_RAPID_API_URL + "/" + token,
-      params: { base64_encoded: "true", fields: "*" },
-      headers: {
-        "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
-        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
-      },
-    };
-    try {
-      let response = await axios.request(options);
-      let statusId = response.data.status?.id;
-
-      // Processed - we have a result
-      if (statusId === 1 || statusId === 2) {
-        // still processing
-        setTimeout(() => {
-          checkStatus(token);
-        }, 2000);
-        return;
-      } else {
-        setProcessing(false);
-        console.log("response.data", response.data);
-        setOutput(response.data.stdout);
-        return;
-      }
-    } catch (err) {
+      body: JSON.stringify(sourceCode),
+    });
+    if (res.status == 200) {
+      const data = await res.json();
+      console.log(data);
+      setOutput(data);
       setProcessing(false);
-      console.log("err", err);
+      setError(false);
+    } else {
+      const error = await res.json();
+      setError(true);
+      setOutput(error);
+      setProcessing(false);
     }
   };
 
@@ -138,7 +85,7 @@ export default function Code({ data }) {
       <StyledRight>
         <div className="output">
           <StyledH5>Output</StyledH5>
-          <Output>{output && atob(output)}</Output>
+          <Output error={error}>{output && output}</Output>
         </div>
         <div
           className="input-compile"
