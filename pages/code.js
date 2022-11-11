@@ -3,6 +3,7 @@ import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { useState } from "react";
 import Output from "../components/code-editor/Output";
+import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
 import { H5 } from "../components/Headers";
 import styled from "styled-components";
 
@@ -13,10 +14,12 @@ const StyledH5 = styled(H5)`
 `;
 
 const SectionWrapper = styled.section`
-  display: grid;
-  grid-template-columns: 1100px max-content;
-  grid-column-gap: 15px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 30px;
+  align-items: flex-end;
   justify-content: center;
+  padding: 20px;
 `;
 
 const StyleButton = styled.button`
@@ -38,7 +41,7 @@ const StyleButton = styled.button`
 `;
 
 export default function Code({ data }) {
-  const [output, setOutput] = useState(null);
+  const [output, setOutput] = useState("");
   const [sourceCode, setSourceCode] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
@@ -101,10 +104,10 @@ export default function Code({ data }) {
         <title>Code Editor</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div>
+      <div style={{ alignSelf: "start" }}>
         <Editor
-          height="100%"
-          width={`100%`}
+          height="840px"
+          width={`920px`}
           theme="vs-dark"
           defaultLanguage="python"
           defaultValue="# some comment"
@@ -115,10 +118,16 @@ export default function Code({ data }) {
             fontSize: "16px",
           }}
         />
+        <div style={{ float: "right" }}>
+          <StyleButton onClick={handleCompile}>
+            {" "}
+            {processing ? "Processing..." : "Compile and Execute"}
+          </StyleButton>
+        </div>
       </div>
       <StyledRight>
+        <QuestionVideoWrapper />
         <div className="output">
-          <StyledH5>Output</StyledH5>
           <Output error={error}>{output && atob(output)}</Output>
         </div>
         <div
@@ -138,12 +147,6 @@ export default function Code({ data }) {
             }}
             style={{ width: "100%" }}
           ></textarea>
-          <div style={{ float: "right" }}>
-            <StyleButton onClick={handleCompile}>
-              {" "}
-              {processing ? "Processing..." : "Compile and Execute"}
-            </StyleButton>
-          </div>
         </div>
       </StyledRight>
     </SectionWrapper>
