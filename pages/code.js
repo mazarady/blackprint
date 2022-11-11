@@ -104,10 +104,17 @@ export default function Code({ data }) {
         <title>Code Editor</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div style={{ alignSelf: "start" }}>
+      <div
+        style={{
+          alignSelf: "start",
+          borderRadius: "6px",
+          height: "840px",
+          width: "920px",
+        }}
+      >
         <Editor
-          height="840px"
-          width={`920px`}
+          height="100%"
+          width="100%"
           theme="vs-dark"
           defaultLanguage="python"
           defaultValue="# some comment"

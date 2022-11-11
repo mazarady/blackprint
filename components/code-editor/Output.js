@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyledOutput = styled.div`
-  height: 400px;
+  height: 210px;
   width: 920px;
   border-radius: 6px;
   font-family: "Karla";
