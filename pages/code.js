@@ -6,6 +6,7 @@ import Output from "../components/code-editor/Output";
 import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
 import { H5 } from "../components/Headers";
 import styled from "styled-components";
+import { GrayBar } from "../components/code-editor/GrayBar";
 
 const StyledRight = styled.div``;
 
@@ -30,7 +31,7 @@ const StyleButton = styled.button`
   height: 40px;
   border-radius: 6px;
   border: 1px solid black;
-  margin: 15px 0px 0px;
+  margin: 10px 0px 0px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 200ms ease-in-out;
@@ -108,12 +109,13 @@ export default function Code({ data }) {
         style={{
           alignSelf: "start",
           borderRadius: "6px",
-          height: "840px",
+          height: "870px",
           width: "920px",
         }}
       >
+        <GrayBar>Editor</GrayBar>
         <Editor
-          height="100%"
+          height="90%"
           width="100%"
           theme="vs-dark"
           defaultLanguage="python"
@@ -135,7 +137,9 @@ export default function Code({ data }) {
       <StyledRight>
         <QuestionVideoWrapper />
         <div className="output">
-          <Output error={error}>{output && atob(output)}</Output>
+          <Output error={error} processing={processing}>
+            {output && atob(output)}
+          </Output>
         </div>
         <div
           className="input-compile"
