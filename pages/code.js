@@ -1,13 +1,15 @@
 import Head from "next/head";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Output from "../components/code-editor/Output";
 import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
 import styled, { css } from "styled-components";
 import { GrayBar } from "../components/code-editor/GrayBar";
 
-const StyledRight = styled.div``;
+const StyledRight = styled.div`
+  width: 100%;
+`;
 
 const EditorCodeFooter = styled.div`
   width: 100%;
@@ -15,6 +17,7 @@ const EditorCodeFooter = styled.div`
   border-top: 0.5px solid white;
   display: flex;
   justify-content: end;
+  gap: 15px;
   padding: 10px 16px;
   border-radius: 0px 0px 5px 5px;
 `;
@@ -36,8 +39,8 @@ const StyleButton = styled.button`
   align-items: center;
   justify-content: center;
   z-index: 3;
-  width: 120px;
-  padding: 4px 0px;
+  width: auto;
+  padding: 4px 10px;
   font-size: 18px;
   line-height: 1;
   user-select: none;
@@ -77,11 +80,30 @@ const StyleButton = styled.button`
 
 export default function Code({ data }) {
   const [output, setOutput] = useState("");
-  const [sourceCode, setSourceCode] = useState(null);
+  const [sourceCode, setSourceCode] = useState("# Print Hello World");
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    let queryParam = params.get("source_code");
+    if (queryParam) {
+      try {
+        const base64 = atob(queryParam);
+        setSourceCode(base64);
+      } catch (err) {
+        console.log("here");
+        return;
+      }
+    }
+  }, []);
+
+  const generateUrl = () => {
+    const queryParam = btoa(sourceCode);
+    console.log(queryParam);
+  };
 
   const handleCompile = (e) => {
     setProcessing(true);
@@ -89,7 +111,8 @@ export default function Code({ data }) {
     const formData = {
       language_id: "71",
       // encode source code in base64
-      source_code: btoa(sourceCode),
+      // we import from __future__ import annotations because of weird type errors we were seeing
+      source_code: btoa("from __future__ import annotations\n" + sourceCode),
       stdin: btoa(customInput),
     };
     const options = {
@@ -145,7 +168,7 @@ export default function Code({ data }) {
           alignSelf: "start",
           borderRadius: "6px",
           height: "870px",
-          width: "920px",
+          width: "100%",
         }}
       >
         <GrayBar>Editor</GrayBar>
@@ -155,6 +178,7 @@ export default function Code({ data }) {
           theme="vs-dark"
           defaultLanguage="python"
           defaultValue="# some comment"
+          value={sourceCode}
           onChange={(e) => {
             setSourceCode(e);
           }}
@@ -163,6 +187,7 @@ export default function Code({ data }) {
           }}
         />
         <EditorCodeFooter style={{ width: "100%" }}>
+          <StyleButton onClick={generateUrl}>share code</StyleButton>
           <StyleButton onClick={handleCompile} processing={processing}>
             <div className="play"></div>
             run

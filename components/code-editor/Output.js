@@ -3,7 +3,6 @@ import { GrayBar } from "./GrayBar";
 
 const StyledOutput = styled.div`
   height: 210px;
-  width: 920px;
   border-radius: 0px 0px 6px 6px;
   font-family: "Karla";
   font-size: 16px;

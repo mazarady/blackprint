@@ -4,7 +4,6 @@ import { GrayBar } from "./GrayBar";
 
 const StyledSection = styled.div`
   height: 510px;
-  width: 920px;
   border-radius: 6px;
   font-family: "Karla";
   background: #fdf9f4;
