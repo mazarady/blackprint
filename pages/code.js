@@ -204,6 +204,7 @@ export default function Code({ data }) {
               onChange={(e) => {
                 setCustomInput(e.target.value);
               }}
+              value={customInput}
               style={{ width: "100%" }}
             ></textarea>
           </div>
