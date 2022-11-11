@@ -16,7 +16,7 @@ const StyledOutput = styled.div`
 
 export default function Output({ error, processing, children }) {
   return (
-    <div style={{ margin: "10px 0px 0px" }}>
+    <div style={{ margin: "30px 0px 0px" }}>
       <GrayBar>
         Terminal{" "}
         {processing && (

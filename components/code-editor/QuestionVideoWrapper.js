@@ -3,7 +3,7 @@ import { useState } from "react";
 import { GrayBar } from "./GrayBar";
 
 const StyledSection = styled.div`
-  height: 540px;
+  height: 510px;
   width: 920px;
   border-radius: 6px;
   font-family: "Karla";

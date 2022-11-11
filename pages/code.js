@@ -16,6 +16,7 @@ const EditorCodeFooter = styled.div`
   display: flex;
   justify-content: end;
   padding: 10px 16px;
+  border-radius: 0px 0px 5px 5px;
 `;
 
 const SectionWrapper = styled.section`
