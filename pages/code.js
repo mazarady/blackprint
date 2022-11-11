@@ -22,7 +22,7 @@ const SectionWrapper = styled.section`
   display: flex;
   flex-direction: row-reverse;
   gap: 30px;
-  align-items: flex-end;
+  align-items: start;
   justify-content: center;
   padding: 20px;
   textarea {
@@ -79,6 +79,7 @@ export default function Code({ data }) {
   const [sourceCode, setSourceCode] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
+  const [showInput, setShowInput] = useState(false);
   const [error, setError] = useState("");
 
   const handleCompile = (e) => {
@@ -174,24 +175,39 @@ export default function Code({ data }) {
             {output && atob(output)}
           </Output>
         </div>
-        <div
-          className="input-compile"
+        <small
           style={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
+            cursor: "pointer",
+            fontFamily: "monospace",
+            fontSize: "13.5px",
+            margin: "5px 0px",
+            display: "block",
+            width: "fit-content",
           }}
+          onClick={() => setShowInput(!showInput)}
         >
-          <textarea
-            rows="5"
-            placeholder="Custom Input (optional)"
-            onChange={(e) => {
-              setCustomInput(e.target.value);
+          {showInput ? "- hide input" : "+ add input"}
+        </small>
+        {showInput && (
+          <div
+            className="input-compile"
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "end",
             }}
-            style={{ width: "100%" }}
-          ></textarea>
-        </div>
+          >
+            <textarea
+              rows="5"
+              placeholder="Custom Input (optional)"
+              onChange={(e) => {
+                setCustomInput(e.target.value);
+              }}
+              style={{ width: "100%" }}
+            ></textarea>
+          </div>
+        )}
       </StyledRight>
     </SectionWrapper>
   );
