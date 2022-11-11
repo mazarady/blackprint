@@ -2,7 +2,7 @@ import styled from "styled-components";
 export const GrayBar = styled.div`
   width: 100%;
   background: rgb(95, 96, 90);
-  height: 35px;
+  height: 30px;
   border-radius: 5px 5px 0px 0px;
   color: #ededec;
   display: flex;

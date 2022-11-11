@@ -31,7 +31,7 @@ const StyledButton = styled.button`
   font-size: 15px;
   font-family: "Karla";
   color: ${({ active }) => (active ? "#4F4F4B" : "#9FA09A")};
-
+  border-right: 1px solid rgb(95,96,90);
   &:hover {
     color: black;
   }

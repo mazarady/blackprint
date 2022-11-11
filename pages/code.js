@@ -4,14 +4,18 @@ import axios from "axios";
 import { useState } from "react";
 import Output from "../components/code-editor/Output";
 import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
-import { H5 } from "../components/Headers";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { GrayBar } from "../components/code-editor/GrayBar";
 
 const StyledRight = styled.div``;
 
-const StyledH5 = styled(H5)`
-  font-weight: 600;
+const EditorCodeFooter = styled.div`
+  width: 100%;
+  background: #1e1e1e;
+  border-top: 0.5px solid white;
+  display: flex;
+  justify-content: end;
+  padding: 10px 16px;
 `;
 
 const SectionWrapper = styled.section`
@@ -21,24 +25,53 @@ const SectionWrapper = styled.section`
   align-items: flex-end;
   justify-content: center;
   padding: 20px;
+  textarea {
+    resize: none;
+  }
 `;
 
 const StyleButton = styled.button`
-  height: 50px;
-  background-color: white;
-  padding: 0px 10px;
-  font-family: "Karla";
-  height: 40px;
-  border-radius: 6px;
-  border: 1px solid black;
-  margin: 10px 0px 0px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 200ms ease-in-out;
-  &:hover {
-    background-color: #1e293b;
-    color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  width: 120px;
+  padding: 4px 0px;
+  font-size: 18px;
+  line-height: 1;
+  user-select: none;
+  transition: all 0.2s ease 0s;
+  border-radius: 2px;
+  cursor: ${({ processing }) => (processing ? "initial" : "pointer")};
+  color: rgb(255, 255, 255);
+  background-color: ${({ processing }) =>
+    processing ? "gray" : "rgb(0, 196, 154)"};
+  border: 0px;
+  height: 30px;
+  font-family: monospace;
+
+  .play {
+    background-image: url("./play.png");
+    width: 18px;
+    margin-right: 5px;
+    height: 18px;
+    background-size: contain;
   }
+
+  ${({ processing }) => {
+    if (!processing) {
+      return css`
+        &:hover {
+          background-color: #97e7d5;
+          color: #159b77;
+
+          .play {
+            background-image: url("./play-hover.png");
+          }
+        }
+      `;
+    }
+  }}
 `;
 
 export default function Code({ data }) {
@@ -127,12 +160,12 @@ export default function Code({ data }) {
             fontSize: "16px",
           }}
         />
-        <div style={{ float: "right" }}>
-          <StyleButton onClick={handleCompile}>
-            {" "}
-            {processing ? "Processing..." : "Compile and Execute"}
+        <EditorCodeFooter style={{ width: "100%" }}>
+          <StyleButton onClick={handleCompile} processing={processing}>
+            <div className="play"></div>
+            run
           </StyleButton>
-        </div>
+        </EditorCodeFooter>
       </div>
       <StyledRight>
         <QuestionVideoWrapper />
