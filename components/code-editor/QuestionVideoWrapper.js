@@ -47,7 +47,7 @@ export default function QuestionVideoWrapper({ children }) {
   const [video, setVideo] = useState(null);
 
   useEffect(() => {
-    setVideo(<ReactPlayer url={'https://blkprnt-free-trial.s3.amazonaws.com/Lecture+-+Lab+3+Part+1.mp4'} controls={true} />)
+    setVideo(<ReactPlayer url={'https://blkprnt-free-trial.s3.amazonaws.com/Lecture+-+Lab+3+Part+1.mp4'} controls={true} width='100%' height="100%"/>)
   }, [])
   const handleSwitch = (index) => {
     const nextActive = active.map((c, i) => {
@@ -85,8 +85,7 @@ export default function QuestionVideoWrapper({ children }) {
         <StyledContent active={active[0]}>
           <h2>First</h2>
         </StyledContent>
-        <StyledContent active={active[1]}>
-          <h2>Second</h2>
+        <StyledContent active={active[1]} style={{padding: '0px'}}>
           {video}
         </StyledContent>
         <StyledContent active={active[2]}>
