@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GrayBar } from "./GrayBar";
+import ReactPlayer from 'react-player'
 
 const StyledSection = styled.div`
   height: 510px;
@@ -42,8 +43,12 @@ const StyledContent = styled.div`
 `;
 
 export default function QuestionVideoWrapper({ children }) {
-  const [active, setActive] = useState([true, false, false]);
+  const [active, setActive] = useState([false, true, false]);
+  const [video, setVideo] = useState(null);
 
+  useEffect(() => {
+    setVideo(<ReactPlayer url={'https://blkprnt-free-trial.s3.amazonaws.com/Lecture+-+Lab+3+Part+1.mp4'} controls={true} />)
+  }, [])
   const handleSwitch = (index) => {
     const nextActive = active.map((c, i) => {
       if (i === index) {
@@ -82,6 +87,7 @@ export default function QuestionVideoWrapper({ children }) {
         </StyledContent>
         <StyledContent active={active[1]}>
           <h2>Second</h2>
+          {video}
         </StyledContent>
         <StyledContent active={active[2]}>
           <h2>Third</h2>
