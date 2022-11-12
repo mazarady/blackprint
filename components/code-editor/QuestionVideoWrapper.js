@@ -43,7 +43,7 @@ const StyledContent = styled.div`
 `;
 
 export default function QuestionVideoWrapper({ children }) {
-  const [active, setActive] = useState([false, true, false]);
+  const [active, setActive] = useState([true, false, false]);
   const [video, setVideo] = useState(null);
 
   useEffect(() => {
