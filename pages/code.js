@@ -7,6 +7,8 @@ import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper
 import styled, { css } from "styled-components";
 import { GrayBar } from "../components/code-editor/GrayBar";
 import Router from "next/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledRight = styled.div`
   width: 100%;
@@ -87,6 +89,15 @@ export default function Code({ data }) {
   const [showInput, setShowInput] = useState(false);
   const [error, setError] = useState("");
 
+  const CopyLinkMessage = ({ link }) => (
+    <span>
+      🦄 Yay! Check out your link{" "}
+      <a target="__blank" href={link} style={{ color: "#CE9178" }}>
+        here.
+      </a>
+    </span>
+  );
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     let queryParam = params.get("source_code");
@@ -142,10 +153,26 @@ export default function Code({ data }) {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        alert("Copied the text: " + window.location.href);
+        toast.success(<CopyLinkMessage link={window.location.href} />, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+        });
       })
       .catch(() => {
-        alert("something went wrong");
+        toast.error("Oh no. Something went wrong.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
       });
   };
 
@@ -280,6 +307,7 @@ export default function Code({ data }) {
           </div>
         )}
       </StyledRight>
+      <ToastContainer />
     </SectionWrapper>
   );
 }
