@@ -90,12 +90,11 @@ export default function Code({ data }) {
   const [error, setError] = useState("");
 
   const CopyLinkMessage = ({ link }) => (
-    <span>
-      🦄 Yay! Check out your link{" "}
-      <a target="__blank" href={link} style={{ color: "#CE9178" }}>
-        here.
-      </a>
-    </span>
+    <span>🦄 Yay! Copied to clipboard</span>
+    // . Or check out your link{" "}
+    //   <a target="__blank" href={link} style={{ color: "#CE9178" }}>
+    //     here.
+    //   </a>
   );
 
   useEffect(() => {
