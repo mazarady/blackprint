@@ -139,8 +139,14 @@ export default function Code({ data }) {
       query: { source_code: encodeURI(encodedKey) },
     });
 
-    navigator.clipboard.writeText(window.location.href);
-    alert("Copied the text: " + window.location.href);
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        alert("Copied the text: " + window.location.href);
+      })
+      .catch(() => {
+        alert("something went wrong");
+      });
   };
 
   const handleCompile = (e) => {
