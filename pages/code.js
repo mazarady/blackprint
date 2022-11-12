@@ -57,12 +57,27 @@ const StyleButton = styled.button`
   height: 30px;
   font-family: monospace;
 
-  .play {
+  .play,
+  .share,
+  .test {
     background-image: url("./play.png");
     width: 18px;
     margin-right: 5px;
     height: 18px;
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .share {
+    background-image: url("./share.png");
+    width: 16px;
+  }
+
+  .test {
+    background-image: url("./test.png");
+    width: 20px;
+    margin-right: 2px;
   }
 
   ${({ processing }) => {
@@ -74,6 +89,14 @@ const StyleButton = styled.button`
 
           .play {
             background-image: url("./play-hover.png");
+          }
+
+          .share {
+            background-image: url("./share-hover.png");
+          }
+
+          .test {
+            background-image: url("./test-hover.png");
           }
         }
       `;
@@ -257,7 +280,14 @@ export default function Code({ data }) {
           }}
         />
         <EditorCodeFooter style={{ width: "100%" }}>
-          <StyleButton onClick={generateUrl}>share code</StyleButton>
+          <StyleButton onClick={generateUrl}>
+            <div className="share"></div>
+            share
+          </StyleButton>
+          <StyleButton onClick={generateUrl}>
+            <div className="test"></div>
+            test
+          </StyleButton>
           <StyleButton onClick={handleCompile} processing={processing}>
             <div className="play"></div>
             run
