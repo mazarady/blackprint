@@ -6,6 +6,7 @@ import Output from "../components/code-editor/Output";
 import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
 import styled, { css } from "styled-components";
 import { GrayBar } from "../components/code-editor/GrayBar";
+import Router from "next/router";
 
 const StyledRight = styled.div`
   width: 100%;
@@ -89,20 +90,57 @@ export default function Code({ data }) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     let queryParam = params.get("source_code");
-    if (queryParam) {
+
+    const fetchSourceCode = async (queryParam) => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: queryParam }),
+      };
       try {
-        const base64 = atob(queryParam);
-        setSourceCode(base64);
+        const res = await fetch("/api/getsourcecode", requestOptions);
+        const { data } = await res.json();
+        return data;
       } catch (err) {
-        console.log("here");
         return;
       }
+    };
+
+    // call the function
+    if (queryParam) {
+      fetchSourceCode(queryParam)
+        .then((savedSourceCode) => {
+          if (savedSourceCode) {
+            const base64 = atob(savedSourceCode);
+            setSourceCode(base64);
+          } else {
+            return;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          return;
+        });
     }
   }, []);
 
-  const generateUrl = () => {
-    const queryParam = btoa(sourceCode);
-    console.log(queryParam);
+  const generateUrl = async () => {
+    const hashedSourceCode = btoa(sourceCode);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: hashedSourceCode }),
+    };
+    const res = await fetch("/api/generateurl", requestOptions);
+    const { data } = await res.json();
+    const encodedKey = data;
+    const navigationResult = await Router.push({
+      pathname: "/code",
+      query: { source_code: encodeURI(encodedKey) },
+    });
+
+    navigator.clipboard.writeText(window.location.href);
+    alert("Copied the text: " + window.location.href);
   };
 
   const handleCompile = (e) => {
