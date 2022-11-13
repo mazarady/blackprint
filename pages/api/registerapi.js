@@ -9,8 +9,21 @@ export default async (req, res) => {
     password,
   };
   try {
-    const postRes = await useUser({ reqInfo, type: "register" });
-    const registerRes = await postRes.json();
+    const registerRes = await useUser({ reqInfo, type: "register" });
+
+    if (!registerRes?.jwt) {
+      console.log(registerRes);
+      const {
+        error: { message },
+      } = registerRes;
+      if (message.includes("Email")) {
+        res.status(400).send({ error: "email is already taken" });
+      } else {
+        res.status(400).send({ error: "username is already taken" });
+      }
+      return;
+    }
+
     const {
       user: { id, username },
     } = registerRes;
@@ -22,7 +35,7 @@ export default async (req, res) => {
       path: "/",
     });
 
-    res.status(postRes.status).send({ id, username });
+    res.status(200).send({ id, username });
   } catch (e) {
     res.status(400).send();
   }
