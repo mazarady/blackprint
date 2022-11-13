@@ -9,10 +9,18 @@ import StyledSpan from "./styles/StyledSpan";
 import CenterLink from "./styles/CenterLink";
 import FormWrapper from "./styles/FormWrapper";
 
+const Error = styled.p`
+  margin: 0;
+  color: red;
+  font-family: "Karla", sans-serif;
+  text-align: center;
+`;
+
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { registerUser } = useContext(AuthContext);
 
@@ -29,15 +37,18 @@ export default function RegisterForm() {
         method: "POST",
         body: JSON.stringify(reqInfo),
       });
-      const { id } = await res.json();
+      const { id, error='' } = await res.json();
       if (res.status === 200) {
+        setError('');
         setLoading(false);
         registerUser(username, id);
       } else {
+        setError(error);
         setLoading(false);
       }
     } catch (err) {
-      console.log(err);
+      setError('Something went wrong during account creation');
+      setLoading(false);
     }
   };
 
@@ -45,6 +56,7 @@ export default function RegisterForm() {
     <FormWrapper onSubmit={handleSubmit}>
       {!loading ? (
         <>
+          {error && <Error>{error}</Error>}
           <Input
             type="email"
             id="email"

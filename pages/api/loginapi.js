@@ -9,19 +9,24 @@ export default async (req, res) => {
   };
   try {
     const postRes = await useUser({ reqInfo });
-    const loginRes = await postRes.json();
+
+    if (!postRes?.jwt) {
+      res.status(400).send();
+      return;
+    }
+
     const {
       user: { id, username },
-    } = loginRes;
+    } = postRes;
 
-    setCookie({ res }, "jwt", loginRes.jwt, {
+    setCookie({ res }, "jwt", postRes.jwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
     });
 
-    res.status(postRes.status).send({ id, username });
+    res.status(200).send({ id, username });
   } catch (e) {
     res.status(400).send();
   }

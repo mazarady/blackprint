@@ -36,7 +36,6 @@ export default function LoginForm() {
         body: JSON.stringify(reqInfo),
       });
       const { id } = await res.json();
-      console.log(res);
       if (res.status === 200) {
         setLoading(false);
         loginUser(username, id);
