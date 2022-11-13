@@ -12,7 +12,6 @@ export default async (req, res) => {
     const registerRes = await useUser({ reqInfo, type: "register" });
 
     if (!registerRes?.jwt) {
-      console.log(registerRes);
       const {
         error: { message },
       } = registerRes;
