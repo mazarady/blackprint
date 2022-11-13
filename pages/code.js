@@ -225,10 +225,10 @@ export default function Code({ data }) {
       .then(function (response) {
         console.log(response.data);
         if (response.data.stderr) {
-          setOutput(response.data.stderr);
+          setOutput(atob(response.data.stderr));
           setError(true);
         } else {
-          setOutput(response.data.stdout);
+          setOutput(atob(response.data.stdout));
           setError(false);
         }
 
@@ -238,7 +238,7 @@ export default function Code({ data }) {
         let error = err.response ? err.response.data : err;
         setProcessing(false);
         setError(true);
-        setOutput(error);
+        setOutput(atob(error));
         // get error status
         let status = err.response.status;
         console.log("status", status);
@@ -248,6 +248,129 @@ export default function Code({ data }) {
         setProcessing(false);
         console.log("catch block...", error);
       });
+  };
+
+  const genTestTokens = (e) => {
+    e.preventDefault();
+    setProcessing(true);
+    const langId = "71";
+    // loop through test cases
+    // have a variable that combines user source_code with test case code
+    // pass that variable in to source_code attribute
+    // stdin stays the same
+    // pass that as an array of objects to batch url
+    const arrayOfExampleTestCases = [
+      `\ndef test_is_even():\n  assert is_even(0)\n  assert not is_even(3)\n  assert not is_even(7)\n  assert is_even(14)\n  assert not is_even(397)\n  assert is_even(298)\n  assert not is_even(431)\n  assert is_even(876)\n  assert is_even(1000)\n  assert not is_even(1001)\n\n  assert not is_even(-3)\n  assert not is_even(-7)\n  assert is_even(-14)\n  assert not is_even(-397)\n  assert is_even(-298)\n  assert not is_even(-431)\n  assert is_even(-876)\n  assert is_even(-1000)\n  assert not is_even(-1001)\ntest_is_even()\n`,
+      `\ndef test_is_odd():\n  assert not is_odd(0)\n  assert is_odd(3)\n  assert is_odd(7)\n  assert not is_odd(14)\n  assert is_odd(397)\n  assert not is_odd(298)\n  assert is_odd(431)\n  assert not is_odd(876)\n  assert not is_odd(1000)\n  assert is_odd(1001)\n\n  assert is_odd(-3)\n  assert is_odd(-7)\n  assert not is_odd(-14)\n  assert is_odd(-397)\n  assert not is_odd(-298)\n  assert is_odd(-431)\n  assert not is_odd(-876)\n  assert not is_odd(-1000)\n  assert is_odd(-1001)\ntest_is_odd()\n`,
+      `\ndef test_merge_lists():\n  assert merge_lists([1,2,3,4], [5,6,7,8]) == [1,2,3,4,5,6,7,8]\n  assert merge_lists([], [5,6,7,8]) == [5,6,7,8]\n  assert merge_lists([1,2,3,4], []) == [1,2,3,4]\n  assert merge_lists([], []) == []\n  assert merge_lists([1], []) == [1]\n\n  # not lists of int but should still work\n  assert merge_lists([True, False], [True, False]) == [True, False, True, False]\n  assert merge_lists([["hello"], ["welcome"], ["to"]], ["blackprint"]) == [["hello"], ["welcome"], ["to"], "blackprint"]\n  assert merge_lists(["hello"], ["bye"]) == ["hello", "bye"]\ntest_merge_lists()\n`,
+      `\ndef test_get_length():\n  assert get_length("hello") == 5\n  assert get_length([1,2,3,4,5,6,7]) == 7\n  assert get_length([]) == 0\n  assert get_length({}) == 0\n  assert get_length({1:2}) == 1\n  assert get_length("") == 0\n\n  assert get_length([(1,2,3)]) == 1\n  assert get_length(tuple()) == 0\n  assert get_length(set([1,2,3,4])) == 4\ntest_get_length()\n`,
+      `\ndef test_match_state():\n  assert match_state("CA", ["Los Angeles, CA", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Los Angeles, CA", "San Diego, CA"]\n  assert match_state("NY", ["Los Angeles, CA", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Brooklyn, NY"]\n  assert match_state("AZ", ["Los Angeles, CA", "Phoenix, AZ", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Phoenix, AZ"]\n  assert match_state("NY", ["Harlem, NY", "Brooklyn, NY", "Staten Island, NY", "Bronx, NY"]) == ["Harlem, NY", "Brooklyn, NY", "Staten Island, NY", "Bronx, NY"]\n  assert match_state("AZ", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == []\n\n  assert match_state("WA", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == ["Seattle, WA"]\n  assert match_state("OR", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == []\n  assert match_state("MN", [""]) == []\n  assert match_state("", []) == []\ntest_match_state()\n`,
+      `\ndef test_is_vowel():\n  assert is_vowel("a")\n  assert is_vowel("A")\n  assert is_vowel("e")\n  assert is_vowel("E")\n  assert is_vowel("i")\n  assert is_vowel("I")\n  assert is_vowel("o")\n  assert is_vowel("O")\n  assert is_vowel("u")\n  assert is_vowel("U")\n\n  assert not is_vowel("B")\n  assert not is_vowel("b")\n\n  assert not is_vowel("y")\n  assert not is_vowel("Y")\n\n  assert not is_vowel("D")\n  assert not is_vowel("d")\n\n  assert not is_vowel("%")\n  assert not is_vowel("(")\n\n  assert not is_vowel("!")\n  assert not is_vowel("?")\ntest_is_vowel()\n`,
+    ];
+    let arrayOfFormData = [];
+
+    arrayOfFormData = arrayOfExampleTestCases.map((testCase) => {
+      return {
+        language_id: langId,
+        // encode source code in base64
+        // we import from __future__ import annotations because of weird type errors we were seeing
+        source_code: btoa(
+          "from __future__ import annotations\n" + sourceCode + "\n" + testCase
+        ),
+        stdin: btoa(customInput),
+      };
+    });
+
+    const options = {
+      method: "POST",
+      url: process.env.NEXT_PUBLIC_RAPID_API_URL + "/batch",
+      params: { base64_encoded: "true" },
+      headers: {
+        "content-type": "application/json",
+        "Content-Type": "application/json",
+        "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
+        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+      },
+      data: {
+        submissions: arrayOfFormData,
+      },
+    };
+    axios
+      .request(options)
+      .then(function (response) {
+        if (!response.data.stderr) {
+          getResultsOfTest(response.data);
+          return;
+        }
+      })
+      .catch((err) => {
+        let error = err.response ? err.response.data : err;
+        setProcessing(false);
+        let status = err.response.status;
+        console.log("status", status);
+        if (status === 429) {
+          console.log("too many requests", status);
+        }
+        console.log("catch block...", error);
+        return;
+      });
+  };
+
+  const getResultsOfTest = async (tokens) => {
+    let queryTokenParam = "";
+    tokens.map(({ token }) => {
+      queryTokenParam += token + ",";
+    });
+    const options = {
+      method: "GET",
+      url: process.env.NEXT_PUBLIC_RAPID_API_URL + "/batch",
+      params: { base64_encoded: "true", tokens: queryTokenParam },
+      headers: {
+        "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
+        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+      },
+    };
+
+    const response = await axios.request(options);
+    let statusId = response.data.submissions[0].status?.id;
+    // Processed - we have a result
+    if (statusId === 1 || statusId === 2) {
+      // still processing
+      setTimeout(() => {
+        getResultsOfTest(tokens);
+      }, 2000);
+      return;
+    } else {
+      renderTestResults(response.data);
+      return;
+    }
+  };
+
+  const renderTestResults = ({ submissions }) => {
+    const renderedOutput = submissions.map((testCase, index) => {
+      const {
+        status: { description },
+      } = testCase;
+      if (description === "Accepted") {
+        return (
+          <li
+            key={index}
+            style={{ color: "rgb(20, 251, 220)", listStyle: "none" }}
+          >{`test_${index} [PASS]`}</li>
+        );
+      } else {
+        return (
+          <li
+            key={index}
+            style={{ color: "rgb(255, 183, 107)", listStyle: "none" }}
+          >
+            {`test_${index} [FAIL]`}
+          </li>
+        );
+      }
+    });
+    setOutput(renderedOutput);
+    setProcessing(false);
   };
 
   return (
@@ -284,7 +407,7 @@ export default function Code({ data }) {
             <div className="share"></div>
             share
           </StyleButton>
-          <StyleButton onClick={generateUrl}>
+          <StyleButton onClick={genTestTokens}>
             <div className="test"></div>
             test
           </StyleButton>
@@ -298,7 +421,7 @@ export default function Code({ data }) {
         <QuestionVideoWrapper />
         <div className="output">
           <Output error={error} processing={processing}>
-            {output && atob(output)}
+            {output && output}
           </Output>
         </div>
         <small
