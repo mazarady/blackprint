@@ -104,6 +104,17 @@ const StyleButton = styled.button`
   }}
 `;
 
+const StyledCollapse = styled.div`
+  background: url("./collapse.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  transform: rotate(180deg);
+  cursor: pointer;
+`;
+
 export default function Code({ data }) {
   const [output, setOutput] = useState("");
   const [sourceCode, setSourceCode] = useState("# Print Hello World");
@@ -114,10 +125,6 @@ export default function Code({ data }) {
 
   const CopyLinkMessage = ({ link }) => (
     <span>🦄 Yay! Copied to clipboard</span>
-    // . Or check out your link{" "}
-    //   <a target="__blank" href={link} style={{ color: "#CE9178" }}>
-    //     here.
-    //   </a>
   );
 
   useEffect(() => {
@@ -250,7 +257,7 @@ export default function Code({ data }) {
       });
   };
 
-  const genTestTokens = (e) => {
+  const genTestTokens = async (e) => {
     e.preventDefault();
     setProcessing(true);
     const langId = "71";
@@ -295,28 +302,28 @@ export default function Code({ data }) {
         submissions: arrayOfFormData,
       },
     };
-    axios
-      .request(options)
-      .then(function (response) {
-        if (!response.data.stderr) {
-          getResultsOfTest(response.data);
-          return;
-        }
-      })
-      .catch((err) => {
-        let error = err.response ? err.response.data : err;
-        setProcessing(false);
-        let status = err.response.status;
-        console.log("status", status);
-        if (status === 429) {
-          console.log("too many requests", status);
-        }
-        console.log("catch block...", error);
-        return;
-      });
+    const response = await axios.request(options);
+    if (response.data.stderr) return;
+
+    try {
+      const submissions = await getResultsOfTest(response.data);
+      renderTestResults(submissions);
+    } catch (err) {
+      const error = err.response ? err.response.data : err;
+      setProcessing(false);
+      let status = err.response.status;
+      console.log("status", status);
+      if (status === 429) {
+        console.log("too many requests", status);
+      }
+      return;
+    }
   };
 
   const getResultsOfTest = async (tokens) => {
+    function timeout(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
     let queryTokenParam = "";
     tokens.map(({ token }) => {
       queryTokenParam += token + ",";
@@ -336,18 +343,17 @@ export default function Code({ data }) {
     // Processed - we have a result
     if (statusId === 1 || statusId === 2) {
       // still processing
-      setTimeout(() => {
-        getResultsOfTest(tokens);
-      }, 2000);
-      return;
+      await timeout(2000);
+      const newResponse = await getResultsOfTest(tokens);
+      return newResponse;
     } else {
-      renderTestResults(response.data);
-      return;
+      return response.data;
     }
   };
 
   const renderTestResults = ({ submissions }) => {
     const renderedOutput = submissions.map((testCase, index) => {
+      const errorMessage = atob(testCase.stderr);
       const {
         status: { description },
       } = testCase;
@@ -355,16 +361,35 @@ export default function Code({ data }) {
         return (
           <li
             key={index}
-            style={{ color: "rgb(20, 251, 220)", listStyle: "none" }}
+            style={{
+              color: "rgb(20, 251, 220)",
+              listStyle: "none",
+              width: "fit-content",
+            }}
           >{`test_${index} [PASS]`}</li>
         );
       } else {
         return (
           <li
             key={index}
-            style={{ color: "rgb(255, 183, 107)", listStyle: "none" }}
+            style={{
+              color: "rgb(255, 183, 107)",
+              listStyle: "none",
+            }}
           >
             {`test_${index} [FAIL]`}
+            <StyledCollapse></StyledCollapse>
+            <span
+              style={{
+                fontSize: "12px",
+                display: "block",
+                color: "#ff6d6b",
+                whiteSpace: "pre-wrap",
+                paddingBottom: "7px",
+              }}
+            >
+              {errorMessage}
+            </span>
           </li>
         );
       }
