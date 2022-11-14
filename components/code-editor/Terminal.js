@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { GrayBar } from "./GrayBar";
 
 const StyledTerminal = styled.div`
-  height: ${({prompt}) => prompt ? '780px': '190px'};
+  height: ${({prompt}) => prompt ? '760px': '190px'};
   border-radius: 0px 0px 6px 6px;
   font-family: "Karla";
   font-size: 16px;
