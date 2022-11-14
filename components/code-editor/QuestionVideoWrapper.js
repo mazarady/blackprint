@@ -4,7 +4,7 @@ import { GrayBar } from "./GrayBar";
 import ReactPlayer from 'react-player'
 
 const StyledSection = styled.div`
-  height: 510px;
+  height: ${({terminal}) => terminal ? '780px': '510px'};
   border-radius: 6px;
   font-family: "Karla";
   background: #fdf9f4;
@@ -42,7 +42,7 @@ const StyledContent = styled.div`
   padding: 0px 20px;
 `;
 
-export default function QuestionVideoWrapper({ children }) {
+export default function QuestionVideoWrapper({ terminal, prompt, hidePrompt, children }) {
   const [active, setActive] = useState([true, false, false]);
   const [video, setVideo] = useState(null);
 
@@ -65,10 +65,11 @@ export default function QuestionVideoWrapper({ children }) {
       style={{
         boxShadow: "rgb(0 0 0 / 20%) 0px 8px 12px 0px",
         borderRadius: "5px",
+        display: prompt ? 'none': 'initial'
       }}
     >
-      <GrayBar>Program 1</GrayBar>
-      <StyledSection>
+      <GrayBar><img src="./close.png" onClick={() => {hidePrompt(true)}}/>Program 1</GrayBar>
+      <StyledSection terminal={terminal}>
         <TabsWrapperMaster>
           <TabsWrapper>
             <StyledButton active={active[0]} onClick={() => handleSwitch(0)}>
