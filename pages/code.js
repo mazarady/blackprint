@@ -514,7 +514,7 @@ export default function Code({ data }) {
             <div className="share"></div>
             share
           </StyleButton>
-          <StyleButton onClick={genTestTokens}>
+          <StyleButton onClick={genTestTokens} processing={processing}>
             <div className="test"></div>
             test
           </StyleButton>
