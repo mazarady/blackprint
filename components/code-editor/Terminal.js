@@ -17,7 +17,7 @@ export default function Terminal({ prompt, terminal, hideTerminal, error, proces
   return (
     <div style={{ margin: prompt ? '': "30px 0px 0px", display: terminal ? 'none': 'block' }}>
       <GrayBar>
-        <img src="./close.png" onClick={() => {hideTerminal(true)}}/>
+        <img src="/close.png" onClick={() => {hideTerminal(true)}}/>
         <span className='terminal'>Terminal{" "}
         {processing && (
           <img

@@ -1,13 +1,16 @@
 import Head from "next/head";
+import nookies from "nookies";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Terminal from "../components/code-editor/Terminal";
-import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
+import Terminal from "../../../../../components/code-editor/Terminal";
+import Prompt from "../../../../../components/code-editor/Prompt";
 import styled, { css } from "styled-components";
-import { GrayBar } from "../components/code-editor/GrayBar";
+import { GrayBar } from "../../../../../components/code-editor/GrayBar";
 import Router from "next/router";
 import { ToastContainer, toast } from "react-toastify";
+import usePrevious from "../../../../../lib/usePrevious";
+import { getCodeData } from "../../../../../lib/courseHelpers";
 import "react-toastify/dist/ReactToastify.css";
 
 const StyledRight = styled.div`
@@ -62,7 +65,7 @@ const StyleButton = styled.button`
   .play,
   .share,
   .test {
-    background-image: url("./play.png");
+    background-image: url("/play.png");
     width: 18px;
     margin-right: 5px;
     height: 18px;
@@ -72,12 +75,12 @@ const StyleButton = styled.button`
   }
 
   .share {
-    background-image: url("./share.png");
+    background-image: url("/share.png");
     width: 16px;
   }
 
   .test {
-    background-image: url("./test.png");
+    background-image: url("/test.png");
     width: 20px;
     margin-right: 2px;
   }
@@ -90,15 +93,15 @@ const StyleButton = styled.button`
           color: #159b77;
 
           .play {
-            background-image: url("./play-hover.png");
+            background-image: url("/play-hover.png");
           }
 
           .share {
-            background-image: url("./share-hover.png");
+            background-image: url("/share-hover.png");
           }
 
           .test {
-            background-image: url("./test-hover.png");
+            background-image: url("/test-hover.png");
           }
         }
       `;
@@ -158,9 +161,13 @@ const StyledNavButton = styled.button`
   }
 `;
 
-export default function Code({ data }) {
+export default function Code({ labData }) {
+  const {
+    0: { attributes: labAttrs },
+  } = labData;
+
   const [output, setOutput] = useState("");
-  const [sourceCode, setSourceCode] = useState("# Print Hello World");
+  const [sourceCode, setSourceCode] = useState("");
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
   const [showInput, setShowInput] = useState(false);
@@ -487,7 +494,7 @@ export default function Code({ data }) {
       >
         <GrayBar>
           <img
-            src="./close.png"
+            src="/close.png"
             onClick={() => {
               hideEditor(true);
             }}
@@ -500,7 +507,7 @@ export default function Code({ data }) {
           width="100%"
           theme="vs-dark"
           defaultLanguage="python"
-          defaultValue="# some comment"
+          defaultValue='# print("hello world")'
           value={sourceCode}
           onChange={(e) => {
             setSourceCode(e);
@@ -525,10 +532,11 @@ export default function Code({ data }) {
         </EditorCodeFooter>
       </div>
       <StyledRight>
-        <QuestionVideoWrapper
+        <Prompt
           terminal={terminal}
           prompt={prompt}
           hidePrompt={hidePrompt}
+          title={labAttrs.title}
         />
         <div className="terminal">
           <Terminal
@@ -579,4 +587,34 @@ export default function Code({ data }) {
       </StyledRight>
     </SectionWrapper>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const cookies = nookies.get(ctx);
+  const { params } = ctx;
+  const data = await getCodeData(params.slug, params.lab, cookies.jwt);
+  const {
+    data: { labData },
+  } = data;
+
+  if (labData.length != 0) {
+    labData.sort((a, b) =>
+      a.attributes.number > b.attributes.number ? 1 : -1
+    );
+    console.log(labData);
+    return {
+      props: {
+        labData,
+        cookies,
+      },
+    };
+  } else {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 }

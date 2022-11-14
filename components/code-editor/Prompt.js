@@ -42,7 +42,7 @@ const StyledContent = styled.div`
   padding: 0px 20px;
 `;
 
-export default function QuestionVideoWrapper({ terminal, prompt, hidePrompt, children }) {
+export default function Prompt({ terminal, prompt, hidePrompt, children, title }) {
   const [active, setActive] = useState([true, false, false]);
   const [video, setVideo] = useState(null);
 
@@ -68,7 +68,7 @@ export default function QuestionVideoWrapper({ terminal, prompt, hidePrompt, chi
         display: prompt ? 'none': 'initial'
       }}
     >
-      <GrayBar><img src="./close.png" onClick={() => {hidePrompt(true)}}/>Program 1</GrayBar>
+      <GrayBar><img src="/close.png" onClick={() => {hidePrompt(true)}}/>{title}</GrayBar>
       <StyledSection terminal={terminal}>
         <TabsWrapperMaster>
           <TabsWrapper>
