@@ -2,7 +2,7 @@ import Head from "next/head";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Output from "../components/code-editor/Output";
+import Terminal from "../components/code-editor/Terminal";
 import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
 import styled, { css } from "styled-components";
 import { GrayBar } from "../components/code-editor/GrayBar";
@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const StyledRight = styled.div`
   width: 100%;
+  flex: 1;
 `;
 
 const EditorCodeFooter = styled.div`
@@ -27,11 +28,12 @@ const EditorCodeFooter = styled.div`
 
 const SectionWrapper = styled.section`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row-reverse;
-  gap: 30px;
+  column-gap: 30px;
   align-items: start;
   justify-content: center;
-  padding: 20px;
+  padding: 15px;
   textarea {
     resize: none;
   }
@@ -104,7 +106,7 @@ const StyleButton = styled.button`
   }}
 `;
 
-const StyledCollapse = styled.div`
+const StyledCollapse = styled.span`
   background: url("./collapse.png");
   background-repeat: no-repeat;
   background-size: contain;
@@ -115,6 +117,47 @@ const StyledCollapse = styled.div`
   cursor: pointer;
 `;
 
+const TestResultsWrapper = styled.div`
+  input[type="checkbox"] {
+    display: none;
+  }
+  .lbl-toggle {
+    cursor: pointer;
+    display: block;
+  }
+
+  .collapsible {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.25s ease-in-out;
+  }
+
+  .toggle:checked + .lbl-toggle + .collapsible {
+    max-height: 100px;
+  }
+`;
+
+const StyledNav = styled.div`
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+`;
+
+const StyledNavButton = styled.button`
+  border: 0px;
+  color: gray;
+  font-family: monospace;
+  cursor: pointer;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  background: transparent;
+  transition: color 200ms ease-in-out;
+  &:hover {
+    color: rgb(255, 183, 107);
+  }
+`;
+
 export default function Code({ data }) {
   const [output, setOutput] = useState("");
   const [sourceCode, setSourceCode] = useState("# Print Hello World");
@@ -122,6 +165,9 @@ export default function Code({ data }) {
   const [customInput, setCustomInput] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [error, setError] = useState("");
+  const [prompt, hidePrompt] = useState(false);
+  const [terminal, hideTerminal] = useState(false);
+  const [editor, hideEditor] = useState(false);
 
   const CopyLinkMessage = ({ link }) => (
     <span>🦄 Yay! Copied to clipboard</span>
@@ -273,9 +319,9 @@ export default function Code({ data }) {
       `\ndef test_get_length():\n  assert get_length("hello") == 5\n  assert get_length([1,2,3,4,5,6,7]) == 7\n  assert get_length([]) == 0\n  assert get_length({}) == 0\n  assert get_length({1:2}) == 1\n  assert get_length("") == 0\n\n  assert get_length([(1,2,3)]) == 1\n  assert get_length(tuple()) == 0\n  assert get_length(set([1,2,3,4])) == 4\ntest_get_length()\n`,
       `\ndef test_match_state():\n  assert match_state("CA", ["Los Angeles, CA", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Los Angeles, CA", "San Diego, CA"]\n  assert match_state("NY", ["Los Angeles, CA", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Brooklyn, NY"]\n  assert match_state("AZ", ["Los Angeles, CA", "Phoenix, AZ", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Phoenix, AZ"]\n  assert match_state("NY", ["Harlem, NY", "Brooklyn, NY", "Staten Island, NY", "Bronx, NY"]) == ["Harlem, NY", "Brooklyn, NY", "Staten Island, NY", "Bronx, NY"]\n  assert match_state("AZ", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == []\n\n  assert match_state("WA", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == ["Seattle, WA"]\n  assert match_state("OR", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == []\n  assert match_state("MN", [""]) == []\n  assert match_state("", []) == []\ntest_match_state()\n`,
       `\ndef test_is_vowel():\n  assert is_vowel("a")\n  assert is_vowel("A")\n  assert is_vowel("e")\n  assert is_vowel("E")\n  assert is_vowel("i")\n  assert is_vowel("I")\n  assert is_vowel("o")\n  assert is_vowel("O")\n  assert is_vowel("u")\n  assert is_vowel("U")\n\n  assert not is_vowel("B")\n  assert not is_vowel("b")\n\n  assert not is_vowel("y")\n  assert not is_vowel("Y")\n\n  assert not is_vowel("D")\n  assert not is_vowel("d")\n\n  assert not is_vowel("%")\n  assert not is_vowel("(")\n\n  assert not is_vowel("!")\n  assert not is_vowel("?")\ntest_is_vowel()\n`,
+      `import io\nimport sys\ndef test_print_all_vowels():\n  # Test case 1\n  capturedOutput = io.StringIO()\n  sys.stdout = capturedOutput\n  print_all_vowels("hello")\n  sys.stdout = sys.__stdout__\n  assert capturedOutput.getvalue() == "e\\no\\n", "error\\nmessage"\ntest_print_all_vowels()\n`,
     ];
     let arrayOfFormData = [];
-
     arrayOfFormData = arrayOfExampleTestCases.map((testCase) => {
       return {
         language_id: langId,
@@ -306,8 +352,10 @@ export default function Code({ data }) {
     if (response.data.stderr) return;
 
     try {
-      const submissions = await getResultsOfTest(response.data);
-      renderTestResults(submissions);
+      const submissions = await getTestResults(response.data);
+      const renderedOutput = renderTestResults(submissions);
+      setOutput(renderedOutput);
+      setProcessing(false);
     } catch (err) {
       const error = err.response ? err.response.data : err;
       setProcessing(false);
@@ -320,7 +368,22 @@ export default function Code({ data }) {
     }
   };
 
-  const getResultsOfTest = async (tokens) => {
+  const renderNavButtons = () => {
+    const NavButtons = [
+      { text: "Prompt", fn: hidePrompt },
+      { text: "Terminal", fn: hideTerminal },
+      { text: "Editor", fn: hideEditor },
+    ].map(({ text, fn }) => {
+      return (
+        <StyledNavButton onClick={() => fn((prevState) => !prevState)}>
+          {text}
+        </StyledNavButton>
+      );
+    });
+    return <StyledNav>{NavButtons}</StyledNav>;
+  };
+
+  const getTestResults = async (tokens) => {
     function timeout(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
@@ -344,7 +407,7 @@ export default function Code({ data }) {
     if (statusId === 1 || statusId === 2) {
       // still processing
       await timeout(2000);
-      const newResponse = await getResultsOfTest(tokens);
+      const newResponse = await getTestResults(tokens);
       return newResponse;
     } else {
       return response.data;
@@ -354,6 +417,7 @@ export default function Code({ data }) {
   const renderTestResults = ({ submissions }) => {
     const renderedOutput = submissions.map((testCase, index) => {
       const errorMessage = atob(testCase.stderr);
+      if (errorMessage.includes("Assertion Error")) console.log(errorMessage);
       const {
         status: { description },
       } = testCase;
@@ -377,16 +441,23 @@ export default function Code({ data }) {
               listStyle: "none",
             }}
           >
-            {`test_${index} [FAIL]`}
-            <StyledCollapse></StyledCollapse>
+            <input
+              id={`collapsible-${index}`}
+              className="toggle"
+              type="checkbox"
+            />
+            <label for={`collapsible-${index}`} className="lbl-toggle">
+              {`test_${index} [FAIL]`}
+              {/* <StyledCollapse></StyledCollapse> */}
+            </label>
             <span
               style={{
                 fontSize: "12px",
                 display: "block",
                 color: "#ff6d6b",
                 whiteSpace: "pre-wrap",
-                paddingBottom: "7px",
               }}
+              className="collapsible"
             >
               {errorMessage}
             </span>
@@ -394,8 +465,7 @@ export default function Code({ data }) {
         );
       }
     });
-    setOutput(renderedOutput);
-    setProcessing(false);
+    return <TestResultsWrapper>{renderedOutput}</TestResultsWrapper>;
   };
 
   return (
@@ -404,15 +474,27 @@ export default function Code({ data }) {
         <title>Code Editor</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
+      {renderNavButtons()}
       <div
         style={{
           alignSelf: "start",
           borderRadius: "6px",
           height: "870px",
           width: "100%",
+          display: editor ? "none" : "initial",
+          flex: "1",
         }}
       >
-        <GrayBar>Editor</GrayBar>
+        <GrayBar>
+          <img
+            src="./close.png"
+            onClick={() => {
+              hideEditor(true);
+            }}
+          />
+          Editor
+        </GrayBar>
+
         <Editor
           height="90%"
           width="100%"
@@ -443,11 +525,21 @@ export default function Code({ data }) {
         </EditorCodeFooter>
       </div>
       <StyledRight>
-        <QuestionVideoWrapper />
-        <div className="output">
-          <Output error={error} processing={processing}>
+        <QuestionVideoWrapper
+          terminal={terminal}
+          prompt={prompt}
+          hidePrompt={hidePrompt}
+        />
+        <div className="terminal">
+          <Terminal
+            prompt={prompt}
+            terminal={terminal}
+            hideTerminal={hideTerminal}
+            error={error}
+            processing={processing}
+          >
             {output && output}
-          </Output>
+          </Terminal>
         </div>
         <small
           style={{
@@ -483,8 +575,8 @@ export default function Code({ data }) {
             ></textarea>
           </div>
         )}
+        <ToastContainer />
       </StyledRight>
-      <ToastContainer />
     </SectionWrapper>
   );
 }

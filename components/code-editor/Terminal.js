@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { GrayBar } from "./GrayBar";
 
-const StyledOutput = styled.div`
-  height: 210px;
+const StyledTerminal = styled.div`
+  height: ${({prompt}) => prompt ? '780px': '190px'};
   border-radius: 0px 0px 6px 6px;
   font-family: "Karla";
   font-size: 16px;
@@ -13,22 +13,23 @@ const StyledOutput = styled.div`
   overflow-y: scroll;
 `;
 
-export default function Output({ error, processing, children }) {
+export default function Terminal({ prompt, terminal, hideTerminal, error, processing, children }) {
   return (
-    <div style={{ margin: "30px 0px 0px" }}>
+    <div style={{ margin: prompt ? '': "30px 0px 0px", display: terminal ? 'none': 'block' }}>
       <GrayBar>
-        Terminal{" "}
+        <img src="./close.png" onClick={() => {hideTerminal(true)}}/>
+        <span className='terminal'>Terminal{" "}
         {processing && (
           <img
             style={{ width: "25px", marginLeft: "2px" }}
             src="/blocks.svg"
             alt="Loading"
           />
-        )}
+        )}</span>
       </GrayBar>
-      <StyledOutput error={error}>
+      <StyledTerminal error={error} prompt={prompt}>
         <pre>{children}</pre>
-      </StyledOutput>
+      </StyledTerminal>
     </div>
   );
 }
