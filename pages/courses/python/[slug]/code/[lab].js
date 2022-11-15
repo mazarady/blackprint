@@ -2,7 +2,7 @@ import Head from "next/head";
 import nookies from "nookies";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Terminal from "../../../../../components/code-editor/Terminal";
 import Prompt from "../../../../../components/code-editor/Prompt";
 import styled, { css } from "styled-components";
@@ -171,7 +171,7 @@ export default function Code({ labData }) {
     data: {
       attributes: { url },
     },
-  } = labAttrs.pythonfile;
+  } = labAttrs.testfile;
 
   const [output, setOutput] = useState("");
   const [sourceCode, setSourceCode] = useState("");
@@ -184,6 +184,11 @@ export default function Code({ labData }) {
   const [editor, hideEditor] = useState(false);
   const [testCases, setTestCases] = useState([]);
   const [encodedZipFile, setEncodedZipFile] = useState("");
+  const editorRef = useRef(null);
+
+  const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+  };
 
   const CopyLinkMessage = ({ link }) => (
     <span>🦄 Yay! Copied to clipboard</span>
@@ -224,46 +229,48 @@ export default function Code({ labData }) {
           return;
         });
     }
-    // createFile(url);
+    createFile(url);
   }, []);
 
-  // const reader = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const fileReader = new FileReader();
-  //     fileReader.onload = () => resolve(fileReader.result);
-  //     fileReader.readAsDataURL(file);
-  //   });
-  // };
-  // const readFile = (file) => {
-  //   reader(file).then((result) => {
-  //     console.log(result.split(","));
-  //     setEncodedZipFile(result.split(",")[1]);
-  //     // let parsed = result.split(",");
-  //     // const testCases = atob(parsed[1]).split("#break");
-  //     // setTestCases(testCases);
-  //   });
-  // };
+  const reader = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.onload = () => resolve(fileReader.result);
+      fileReader.readAsDataURL(file);
+    });
+  };
+  const readFile = (file) => {
+    reader(file).then((result) => {
+      // console.log(result.split(","));
+      // setEncodedZipFile(result.split(",")[1]);
+      let parsed = result.split(",");
+      const testCases = atob(parsed[1]).split("#break");
+      setTestCases(testCases);
+    });
+  };
 
-  // const createFile = async (pythonFile) => {
-  //   let response = await fetch(pythonFile);
-  //   let data = await response.blob();
-  //   console.log(data);
-  //   var zip = new JSZip();
-  //   zip.loadAsync(data /* = file blob */).then(
-  //     function (zip) {
-  //       // process ZIP file content here
-  //       const readFile = zip.file("hello.py").async("string"); // a promise of "Hello World\n"
-  //       console.log(readFile);
-  //     },
-  //     function () {}
-  //   );
-  //   // let metadata = {
-  //   //   type: "application/zip",
-  //   // };
-  //   // let file = new File([data], "test.py", metadata);
-  //   // readFile(file);
-  //   // ... do something with the file or return it
-  // };
+  const createFile = async (testfile) => {
+    let response = await fetch(testfile);
+    let data = await response.blob();
+
+    let metadata = {
+      type: "text",
+    };
+    let file = new File([data], "test.py", metadata);
+    readFile(file);
+    // ... do something with the file or return it
+
+    // console.log(data);
+    // var zip = new JSZip();
+    // zip.loadAsync(data /* = file blob */).then(
+    //   function (zip) {
+    //     // process ZIP file content here
+    //     const readFile = zip.file("hello.py").async("string"); // a promise of "Hello World\n"
+    //     console.log(readFile);
+    //   },
+    //   function () {}
+    // );
+  };
 
   const shareUrl = async () => {
     const hashedSourceCode = btoa(sourceCode);
@@ -372,7 +379,7 @@ export default function Code({ labData }) {
     // pass that as an array of objects to batch url
     const testCasesWithoutGlobals = testCases.slice(1);
     const globals = testCases[0];
-    arrayOfFormData = testCasesWithoutGlobals.map((testCase) => {
+    const arrayOfFormData = testCasesWithoutGlobals.map((testCase) => {
       return {
         language_id: langId,
         // encode source code in base64
@@ -429,8 +436,6 @@ export default function Code({ labData }) {
     // };
 
     const response = await axios.request(options);
-    console.log(response);
-    setProcessing(false);
     if (response.data.stderr) return;
 
     try {
@@ -590,6 +595,7 @@ export default function Code({ labData }) {
           onChange={(e) => {
             setSourceCode(e);
           }}
+          onMount={handleEditorDidMount}
           options={{
             fontSize: "16px",
           }}
