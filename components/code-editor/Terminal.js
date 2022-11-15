@@ -11,6 +11,9 @@ const StyledTerminal = styled.div`
   background: #252620;
   color: ${({ error }) => (error ? "red" : "#D5D1CB")};
   overflow-y: scroll;
+  pre {
+    white-space: pre-wrap;
+  }
 `;
 
 export default function Terminal({ prompt, terminal, hideTerminal, error, processing, children }) {
