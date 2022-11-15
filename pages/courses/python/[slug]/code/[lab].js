@@ -1,14 +1,18 @@
 import Head from "next/head";
+import nookies from "nookies";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Terminal from "../components/code-editor/Terminal";
-import QuestionVideoWrapper from "../components/code-editor/QuestionVideoWrapper";
+import Terminal from "../../../../../components/code-editor/Terminal";
+import Prompt from "../../../../../components/code-editor/Prompt";
 import styled, { css } from "styled-components";
-import { GrayBar } from "../components/code-editor/GrayBar";
+import { GrayBar } from "../../../../../components/code-editor/GrayBar";
 import Router from "next/router";
 import { ToastContainer, toast } from "react-toastify";
+import usePrevious from "../../../../../lib/usePrevious";
+import { getCodeData } from "../../../../../lib/courseHelpers";
 import "react-toastify/dist/ReactToastify.css";
+import JSZip from "jszip";
 
 const StyledRight = styled.div`
   width: 100%;
@@ -62,7 +66,7 @@ const StyleButton = styled.button`
   .play,
   .share,
   .test {
-    background-image: url("./play.png");
+    background-image: url("/play.png");
     width: 18px;
     margin-right: 5px;
     height: 18px;
@@ -72,12 +76,12 @@ const StyleButton = styled.button`
   }
 
   .share {
-    background-image: url("./share.png");
+    background-image: url("/share.png");
     width: 16px;
   }
 
   .test {
-    background-image: url("./test.png");
+    background-image: url("/test.png");
     width: 20px;
     margin-right: 2px;
   }
@@ -90,15 +94,15 @@ const StyleButton = styled.button`
           color: #159b77;
 
           .play {
-            background-image: url("./play-hover.png");
+            background-image: url("/play-hover.png");
           }
 
           .share {
-            background-image: url("./share-hover.png");
+            background-image: url("/share-hover.png");
           }
 
           .test {
-            background-image: url("./test-hover.png");
+            background-image: url("/test-hover.png");
           }
         }
       `;
@@ -158,9 +162,19 @@ const StyledNavButton = styled.button`
   }
 `;
 
-export default function Code({ data }) {
+export default function Code({ labData }) {
+  const {
+    0: { attributes: labAttrs },
+  } = labData;
+
+  const {
+    data: {
+      attributes: { url },
+    },
+  } = labAttrs.pythonfile;
+
   const [output, setOutput] = useState("");
-  const [sourceCode, setSourceCode] = useState("# Print Hello World");
+  const [sourceCode, setSourceCode] = useState("");
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
   const [showInput, setShowInput] = useState(false);
@@ -168,6 +182,8 @@ export default function Code({ data }) {
   const [prompt, hidePrompt] = useState(false);
   const [terminal, hideTerminal] = useState(false);
   const [editor, hideEditor] = useState(false);
+  const [testCases, setTestCases] = useState([]);
+  const [encodedZipFile, setEncodedZipFile] = useState("");
 
   const CopyLinkMessage = ({ link }) => (
     <span>🦄 Yay! Copied to clipboard</span>
@@ -208,9 +224,48 @@ export default function Code({ data }) {
           return;
         });
     }
+    // createFile(url);
   }, []);
 
-  const generateUrl = async () => {
+  // const reader = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const fileReader = new FileReader();
+  //     fileReader.onload = () => resolve(fileReader.result);
+  //     fileReader.readAsDataURL(file);
+  //   });
+  // };
+  // const readFile = (file) => {
+  //   reader(file).then((result) => {
+  //     console.log(result.split(","));
+  //     setEncodedZipFile(result.split(",")[1]);
+  //     // let parsed = result.split(",");
+  //     // const testCases = atob(parsed[1]).split("#break");
+  //     // setTestCases(testCases);
+  //   });
+  // };
+
+  // const createFile = async (pythonFile) => {
+  //   let response = await fetch(pythonFile);
+  //   let data = await response.blob();
+  //   console.log(data);
+  //   var zip = new JSZip();
+  //   zip.loadAsync(data /* = file blob */).then(
+  //     function (zip) {
+  //       // process ZIP file content here
+  //       const readFile = zip.file("hello.py").async("string"); // a promise of "Hello World\n"
+  //       console.log(readFile);
+  //     },
+  //     function () {}
+  //   );
+  //   // let metadata = {
+  //   //   type: "application/zip",
+  //   // };
+  //   // let file = new File([data], "test.py", metadata);
+  //   // readFile(file);
+  //   // ... do something with the file or return it
+  // };
+
+  const shareUrl = async () => {
     const hashedSourceCode = btoa(sourceCode);
     const requestOptions = {
       method: "POST",
@@ -220,8 +275,11 @@ export default function Code({ data }) {
     const res = await fetch("/api/generateurl", requestOptions);
     const { data } = await res.json();
     const encodedKey = data;
+    console.log(Router.basePath);
+    console.log(Router.asPath);
+    const asPath = Router.asPath.split("?")[0];
     const navigationResult = await Router.push({
-      pathname: "/code",
+      pathname: asPath,
       query: { source_code: encodeURI(encodedKey) },
     });
 
@@ -312,23 +370,19 @@ export default function Code({ data }) {
     // pass that variable in to source_code attribute
     // stdin stays the same
     // pass that as an array of objects to batch url
-    const arrayOfExampleTestCases = [
-      `\ndef test_is_even():\n  assert is_even(0)\n  assert not is_even(3)\n  assert not is_even(7)\n  assert is_even(14)\n  assert not is_even(397)\n  assert is_even(298)\n  assert not is_even(431)\n  assert is_even(876)\n  assert is_even(1000)\n  assert not is_even(1001)\n\n  assert not is_even(-3)\n  assert not is_even(-7)\n  assert is_even(-14)\n  assert not is_even(-397)\n  assert is_even(-298)\n  assert not is_even(-431)\n  assert is_even(-876)\n  assert is_even(-1000)\n  assert not is_even(-1001)\ntest_is_even()\n`,
-      `\ndef test_is_odd():\n  assert not is_odd(0)\n  assert is_odd(3)\n  assert is_odd(7)\n  assert not is_odd(14)\n  assert is_odd(397)\n  assert not is_odd(298)\n  assert is_odd(431)\n  assert not is_odd(876)\n  assert not is_odd(1000)\n  assert is_odd(1001)\n\n  assert is_odd(-3)\n  assert is_odd(-7)\n  assert not is_odd(-14)\n  assert is_odd(-397)\n  assert not is_odd(-298)\n  assert is_odd(-431)\n  assert not is_odd(-876)\n  assert not is_odd(-1000)\n  assert is_odd(-1001)\ntest_is_odd()\n`,
-      `\ndef test_merge_lists():\n  assert merge_lists([1,2,3,4], [5,6,7,8]) == [1,2,3,4,5,6,7,8]\n  assert merge_lists([], [5,6,7,8]) == [5,6,7,8]\n  assert merge_lists([1,2,3,4], []) == [1,2,3,4]\n  assert merge_lists([], []) == []\n  assert merge_lists([1], []) == [1]\n\n  # not lists of int but should still work\n  assert merge_lists([True, False], [True, False]) == [True, False, True, False]\n  assert merge_lists([["hello"], ["welcome"], ["to"]], ["blackprint"]) == [["hello"], ["welcome"], ["to"], "blackprint"]\n  assert merge_lists(["hello"], ["bye"]) == ["hello", "bye"]\ntest_merge_lists()\n`,
-      `\ndef test_get_length():\n  assert get_length("hello") == 5\n  assert get_length([1,2,3,4,5,6,7]) == 7\n  assert get_length([]) == 0\n  assert get_length({}) == 0\n  assert get_length({1:2}) == 1\n  assert get_length("") == 0\n\n  assert get_length([(1,2,3)]) == 1\n  assert get_length(tuple()) == 0\n  assert get_length(set([1,2,3,4])) == 4\ntest_get_length()\n`,
-      `\ndef test_match_state():\n  assert match_state("CA", ["Los Angeles, CA", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Los Angeles, CA", "San Diego, CA"]\n  assert match_state("NY", ["Los Angeles, CA", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Brooklyn, NY"]\n  assert match_state("AZ", ["Los Angeles, CA", "Phoenix, AZ", "Brooklyn, NY", "Seattle, WA", "San Diego, CA"]) == ["Phoenix, AZ"]\n  assert match_state("NY", ["Harlem, NY", "Brooklyn, NY", "Staten Island, NY", "Bronx, NY"]) == ["Harlem, NY", "Brooklyn, NY", "Staten Island, NY", "Bronx, NY"]\n  assert match_state("AZ", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == []\n\n  assert match_state("WA", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == ["Seattle, WA"]\n  assert match_state("OR", ["Los Angeles, CA", "Seattle, WA", "San Diego, CA"]) == []\n  assert match_state("MN", [""]) == []\n  assert match_state("", []) == []\ntest_match_state()\n`,
-      `\ndef test_is_vowel():\n  assert is_vowel("a")\n  assert is_vowel("A")\n  assert is_vowel("e")\n  assert is_vowel("E")\n  assert is_vowel("i")\n  assert is_vowel("I")\n  assert is_vowel("o")\n  assert is_vowel("O")\n  assert is_vowel("u")\n  assert is_vowel("U")\n\n  assert not is_vowel("B")\n  assert not is_vowel("b")\n\n  assert not is_vowel("y")\n  assert not is_vowel("Y")\n\n  assert not is_vowel("D")\n  assert not is_vowel("d")\n\n  assert not is_vowel("%")\n  assert not is_vowel("(")\n\n  assert not is_vowel("!")\n  assert not is_vowel("?")\ntest_is_vowel()\n`,
-      `import io\nimport sys\ndef test_print_all_vowels():\n  # Test case 1\n  capturedOutput = io.StringIO()\n  sys.stdout = capturedOutput\n  print_all_vowels("hello")\n  sys.stdout = sys.__stdout__\n  assert capturedOutput.getvalue() == "e\\no\\n", "error\\nmessage"\ntest_print_all_vowels()\n`,
-    ];
-    let arrayOfFormData = [];
-    arrayOfFormData = arrayOfExampleTestCases.map((testCase) => {
+    const testCasesWithoutGlobals = testCases.slice(1);
+    const globals = testCases[0];
+    arrayOfFormData = testCasesWithoutGlobals.map((testCase) => {
       return {
         language_id: langId,
         // encode source code in base64
         // we import from __future__ import annotations because of weird type errors we were seeing
         source_code: btoa(
-          "from __future__ import annotations\n" + sourceCode + "\n" + testCase
+          "from __future__ import annotations\n" +
+            globals +
+            sourceCode +
+            "\n" +
+            testCase
         ),
         stdin: btoa(customInput),
       };
@@ -348,7 +402,35 @@ export default function Code({ data }) {
         submissions: arrayOfFormData,
       },
     };
+
+    // FOR ADDITIONAL FILES
+
+    // const testFormData = {
+    //   language_id: langId,
+    //   // encode source code in base64
+    //   // we import from __future__ import annotations because of weird type errors we were seeing
+    //   source_code: btoa("from __future__ import annotations\n" + sourceCode),
+    //   additional_files:
+    //     "UEsDBBQACAAIADGZblUAAAAAAAAAAC0AAAAIACAAaGVsbG8ucHlVVA0AB+4Cc2P6AnNj+gJzY3V4CwABBPcBAAAEFAAAAEtJTVPISM3JyS/PL8pJ0dC04lJQKCjKzCvRUC/Ih4AChbTE5FR1TS4uAFBLBwiH1UL6KgAAAC0AAABQSwMEFAAIAAgAMZluVQAAAAAAAAAAsAAAABMAIABfX01BQ09TWC8uX2hlbGxvLnB5VVQNAAfuAnNj+gJzYwQDc2N1eAsAAQT3AQAABBQAAABjYBVjZ2BiYPBNTFbwD1aIUIACkBgDJxAbAXEdEIP4GxiIAo4hIUFQJkjHAiAWQFPCiBCXSs7P1UssKMhJ1ctJLC4pLU5NSUksSVUOCAYp/MVUnAyib+jpglzDAABQSwcIatwi/V0AAACwAAAAUEsBAhQDFAAIAAgAMZluVYfVQvoqAAAALQAAAAgAIAAAAAAAAAAAAKSBAAAAAGhlbGxvLnB5VVQNAAfuAnNj+gJzY/oCc2N1eAsAAQT3AQAABBQAAABQSwECFAMUAAgACAAxmW5Vatwi/V0AAACwAAAAEwAgAAAAAAAAAAAApIGAAAAAX19NQUNPU1gvLl9oZWxsby5weVVUDQAH7gJzY/oCc2MEA3NjdXgLAAEE9wEAAAQUAAAAUEsFBgAAAAACAAIAtwAAAD4BAAAAAA==",
+    //   stdin: btoa(customInput),
+    // };
+
+    // const testOptions = {
+    //   method: "POST",
+    //   url: process.env.NEXT_PUBLIC_RAPID_API_URL + "/?wait=true",
+    //   params: { base64_encoded: "true", fields: "*" },
+    //   headers: {
+    //     "content-type": "application/json",
+    //     "Content-Type": "application/json",
+    //     "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
+    //     "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+    //   },
+    //   data: testFormData,
+    // };
+
     const response = await axios.request(options);
+    console.log(response);
+    setProcessing(false);
     if (response.data.stderr) return;
 
     try {
@@ -373,9 +455,12 @@ export default function Code({ data }) {
       { text: "Prompt", fn: hidePrompt },
       { text: "Terminal", fn: hideTerminal },
       { text: "Editor", fn: hideEditor },
-    ].map(({ text, fn }) => {
+    ].map(({ text, fn }, index) => {
       return (
-        <StyledNavButton onClick={() => fn((prevState) => !prevState)}>
+        <StyledNavButton
+          key={index}
+          onClick={() => fn((prevState) => !prevState)}
+        >
           {text}
         </StyledNavButton>
       );
@@ -487,7 +572,7 @@ export default function Code({ data }) {
       >
         <GrayBar>
           <img
-            src="./close.png"
+            src="/close.png"
             onClick={() => {
               hideEditor(true);
             }}
@@ -500,7 +585,7 @@ export default function Code({ data }) {
           width="100%"
           theme="vs-dark"
           defaultLanguage="python"
-          defaultValue="# some comment"
+          defaultValue='# print("hello world")'
           value={sourceCode}
           onChange={(e) => {
             setSourceCode(e);
@@ -510,7 +595,7 @@ export default function Code({ data }) {
           }}
         />
         <EditorCodeFooter style={{ width: "100%" }}>
-          <StyleButton onClick={generateUrl}>
+          <StyleButton onClick={shareUrl}>
             <div className="share"></div>
             share
           </StyleButton>
@@ -525,10 +610,11 @@ export default function Code({ data }) {
         </EditorCodeFooter>
       </div>
       <StyledRight>
-        <QuestionVideoWrapper
+        <Prompt
           terminal={terminal}
           prompt={prompt}
           hidePrompt={hidePrompt}
+          title={labAttrs.title}
         />
         <div className="terminal">
           <Terminal
@@ -579,4 +665,45 @@ export default function Code({ data }) {
       </StyledRight>
     </SectionWrapper>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const cookies = nookies.get(ctx);
+  const { params } = ctx;
+  const data = await getCodeData(params.slug, params.lab, cookies.jwt);
+  const {
+    data: { labData },
+  } = data;
+
+  const loginPage = {
+    props: {},
+    redirect: {
+      destination: "/login",
+      permanent: false,
+    },
+  };
+
+  const notExist = {
+    props: {},
+    redirect: {
+      destination: "/404",
+      permanent: false,
+    },
+  };
+
+  if (!labData) return loginPage;
+
+  if (labData.length != 0) {
+    labData.sort((a, b) =>
+      a.attributes.number > b.attributes.number ? 1 : -1
+    );
+    return {
+      props: {
+        labData,
+        cookies,
+      },
+    };
+  } else {
+    return notExist;
+  }
 }

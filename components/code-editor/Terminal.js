@@ -11,13 +11,16 @@ const StyledTerminal = styled.div`
   background: #252620;
   color: ${({ error }) => (error ? "red" : "#D5D1CB")};
   overflow-y: scroll;
+  pre {
+    white-space: pre-wrap;
+  }
 `;
 
 export default function Terminal({ prompt, terminal, hideTerminal, error, processing, children }) {
   return (
     <div style={{ margin: prompt ? '': "30px 0px 0px", display: terminal ? 'none': 'block' }}>
       <GrayBar>
-        <img src="./close.png" onClick={() => {hideTerminal(true)}}/>
+        <img src="/close.png" onClick={() => {hideTerminal(true)}}/>
         <span className='terminal'>Terminal{" "}
         {processing && (
           <img

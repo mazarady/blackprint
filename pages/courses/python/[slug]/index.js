@@ -1,6 +1,6 @@
-import { getClassData } from "../../../lib/courseHelpers";
-import Banner from "../../../components/Banner";
-import Content from "../../../components/Content";
+import { getClassData } from "../../../../lib/courseHelpers";
+import Banner from "../../../../components/Banner";
+import Content from "../../../../components/Content";
 import { Fragment } from "react";
 import nookies from "nookies";
 import Head from "next/head";
