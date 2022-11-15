@@ -2,7 +2,7 @@ import Head from "next/head";
 import nookies from "nookies";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Terminal from "../../../../../components/code-editor/Terminal";
 import Prompt from "../../../../../components/code-editor/Prompt";
 import styled, { css } from "styled-components";
@@ -184,6 +184,11 @@ export default function Code({ labData }) {
   const [editor, hideEditor] = useState(false);
   const [testCases, setTestCases] = useState([]);
   const [encodedZipFile, setEncodedZipFile] = useState("");
+  const editorRef = useRef(null);
+
+  const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+  };
 
   const CopyLinkMessage = ({ link }) => (
     <span>🦄 Yay! Copied to clipboard</span>
@@ -590,6 +595,7 @@ export default function Code({ labData }) {
           onChange={(e) => {
             setSourceCode(e);
           }}
+          onMount={handleEditorDidMount}
           options={{
             fontSize: "16px",
           }}
