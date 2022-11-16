@@ -2,7 +2,7 @@ import Head from "next/head";
 import nookies from "nookies";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import Terminal from "../../../../../components/code-editor/Terminal";
 import Prompt from "../../../../../components/code-editor/Prompt";
 import { GrayBar } from "../../../../../components/code-editor/GrayBar";
@@ -12,30 +12,30 @@ import usePrevious from "../../../../../lib/usePrevious";
 import { getCodeData } from "../../../../../lib/courseHelpers";
 import "react-toastify/dist/ReactToastify.css";
 import JSZip from "jszip";
+import AuthContext from "../../../../../context/AuthContext";
 import {
   StyledRight,
   EditorCodeFooter,
   SectionWrapper,
   StyleButton,
   StyledCollapse,
+  SaveState,
   TestResultsWrapper,
   StyledNav,
   StyledNavButton,
 } from "../../../../../components/code-editor/others";
+import { getUserSubmission } from "../../../../../lib/getusersubmission";
 
-export default function Code({ labData }) {
-  const {
-    0: { attributes: labAttrs },
-  } = labData;
-
+export default function Code({ labAttrs, labId, userSubmission, cookies }) {
   const {
     data: {
       attributes: { url },
     },
   } = labAttrs.testfile;
 
+  const { user } = useContext(AuthContext);
   const [output, setOutput] = useState("");
-  const [sourceCode, setSourceCode] = useState("");
+  const [sourceCode, setSourceCode] = useState(userSubmission);
   const [processing, setProcessing] = useState(false);
   const [customInput, setCustomInput] = useState("");
   const [showInput, setShowInput] = useState(false);
@@ -46,6 +46,7 @@ export default function Code({ labData }) {
   const [testCases, setTestCases] = useState([]);
   const [encodedZipFile, setEncodedZipFile] = useState("");
   const editorRef = useRef(null);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -55,43 +56,74 @@ export default function Code({ labData }) {
     <span>🦄 Yay! Copied to clipboard</span>
   );
 
+  // Share Code Logic -- need to fix edge case when user saves coded and shares it.
+  // useEffect(() => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   let queryParam = params.get("source_code");
+
+  //   const fetchSourceCode = async (queryParam) => {
+  //     const requestOptions = {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ data: queryParam }),
+  //     };
+  //     try {
+  //       const res = await fetch("/api/getsharedcode", requestOptions);
+  //       const { data } = await res.json();
+  //       return data;
+  //     } catch (err) {
+  //       console.log(err);
+  //       return;
+  //     }
+  //   };
+
+  //   // call the function
+  //   if (queryParam) {
+  //     fetchSourceCode(queryParam)
+  //       .then((savedSourceCode) => {
+  //         if (savedSourceCode) {
+  //           const base64 = atob(savedSourceCode);
+  //           setSourceCode(base64);
+  //         } else {
+  //           return;
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         return;
+  //       });
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    createFile(url);
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     let queryParam = params.get("source_code");
+    if (queryParam) return;
 
-    const fetchSourceCode = async (queryParam) => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (!user) return;
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: queryParam }),
+        body: JSON.stringify({
+          lab: labId,
+          username: user.username,
+          jwt: cookies.jwt,
+          sourceCode: sourceCode,
+        }),
       };
-      try {
-        const res = await fetch("/api/getsourcecode", requestOptions);
-        const { data } = await res.json();
-        return data;
-      } catch (err) {
-        return;
+      const req = await fetch("/api/saveusersubmission", requestOptions);
+      if (req.status === 200) {
+        setSaveLoading(false);
       }
-    };
+    }, 3000);
 
-    // call the function
-    if (queryParam) {
-      fetchSourceCode(queryParam)
-        .then((savedSourceCode) => {
-          if (savedSourceCode) {
-            const base64 = atob(savedSourceCode);
-            setSourceCode(base64);
-          } else {
-            return;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          return;
-        });
-    }
-    createFile(url);
-  }, []);
+    return () => clearTimeout(delayDebounceFn);
+  }, [sourceCode]);
 
   const reader = (file) => {
     return new Promise((resolve, reject) => {
@@ -143,8 +175,6 @@ export default function Code({ labData }) {
     const res = await fetch("/api/generateurl", requestOptions);
     const { data } = await res.json();
     const encodedKey = data;
-    console.log(Router.basePath);
-    console.log(Router.asPath);
     const asPath = Router.asPath.split("?")[0];
     const navigationResult = await Router.push({
       pathname: asPath,
@@ -454,6 +484,7 @@ export default function Code({ labData }) {
           defaultValue='# print("hello world")'
           value={sourceCode}
           onChange={(e) => {
+            setSaveLoading(true);
             setSourceCode(e);
           }}
           onMount={handleEditorDidMount}
@@ -462,18 +493,23 @@ export default function Code({ labData }) {
           }}
         />
         <EditorCodeFooter style={{ width: "100%" }}>
-          <StyleButton onClick={shareUrl}>
-            <div className="share"></div>
-            share
-          </StyleButton>
-          <StyleButton onClick={genTestTokens} processing={processing}>
-            <div className="test"></div>
-            test
-          </StyleButton>
-          <StyleButton onClick={handleCompile} processing={processing}>
-            <div className="play"></div>
-            run
-          </StyleButton>
+          <SaveState saveLoading={saveLoading}>
+            <span /> {saveLoading ? "saving" : "saved"}
+          </SaveState>
+          <div className="buttons">
+            {/* <StyleButton onClick={shareUrl}>
+              <div className="share"></div>
+              share
+            </StyleButton> */}
+            <StyleButton onClick={genTestTokens} processing={processing}>
+              <div className="test"></div>
+              test
+            </StyleButton>
+            <StyleButton onClick={handleCompile} processing={processing}>
+              <div className="play"></div>
+              run
+            </StyleButton>
+          </div>
         </EditorCodeFooter>
       </div>
       <StyledRight>
@@ -550,7 +586,7 @@ export async function getServerSideProps(ctx) {
     },
   };
 
-  const notExist = {
+  const _404 = {
     props: {},
     redirect: {
       destination: "/404",
@@ -561,16 +597,26 @@ export async function getServerSideProps(ctx) {
   if (!labData) return loginPage;
 
   if (labData.length != 0) {
-    labData.sort((a, b) =>
-      a.attributes.number > b.attributes.number ? 1 : -1
+    const {
+      0: { id: labId, attributes: labAttrs },
+    } = labData;
+    const userSubmissionData = await getUserSubmission(
+      labAttrs.title,
+      cookies.jwt
     );
+    const {
+      data: { userSubmission },
+    } = userSubmissionData;
+
     return {
       props: {
-        labData,
+        labAttrs,
+        labId,
+        userSubmission,
         cookies,
       },
     };
   } else {
-    return notExist;
+    return _404;
   }
 }
