@@ -600,8 +600,9 @@ export async function getServerSideProps(ctx) {
     const {
       0: { id: labId, attributes: labAttrs },
     } = labData;
+    console.log(labAttrs);
     const userSubmissionData = await getUserSubmission(
-      labAttrs.title,
+      labAttrs.slug,
       cookies.jwt
     );
     const {
