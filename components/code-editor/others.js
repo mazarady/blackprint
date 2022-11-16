@@ -10,10 +10,14 @@ export const EditorCodeFooter = styled.div`
   background: #1e1e1e;
   border-top: 0.5px solid white;
   display: flex;
-  justify-content: end;
-  gap: 15px;
+  justify-content: space-between;
   padding: 10px 16px;
   border-radius: 0px 0px 5px 5px;
+  .buttons {
+    display: flex;
+    gap: 15px;
+  }
+
 `;
 
 export const SectionWrapper = styled.section`
@@ -147,3 +151,21 @@ export const StyledNavButton = styled.button`
     color: rgb(255, 183, 107);
   }
 `;
+
+export const SaveState = styled.div`
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  align-self: center;
+  font-size: 15px;
+  color: rgb(131, 132, 126);
+  font-family: monospace;
+  span {
+    height: 6px;
+    width: 6px;
+    background-color: ${({saveLoading}) => saveLoading ? 'rgb(255, 183, 107) ': 'rgb(20, 251, 220)'};
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+`
