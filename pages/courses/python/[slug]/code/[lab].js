@@ -615,6 +615,7 @@ export async function getServerSideProps(ctx) {
         userSubmission,
         cookies,
       },
+      revalidate: 2, // In seconds
     };
   } else {
     return _404;
